@@ -1,26 +1,510 @@
 @import "tailwindcss";
 
+@theme {
+  /* Graphite / charcoal — machined surfaces under dim tungsten. */
+  --color-background: #101215;
+  --color-panel: #15181d;
+  --color-panel-2: #181c21;
+  --color-elevated: #1c2026;
+  --color-border: rgba(255, 255, 255, 0.07);
+  --color-border-soft: rgba(255, 255, 255, 0.045);
+  --color-border-strong: rgba(255, 255, 255, 0.11);
+  --color-text: #f3f3f3;
+  --color-muted: #7d828a;
+  --color-muted-2: #565a61;
+  --color-accent: #c7a96b;
+  --color-accent-dim: #8c764a;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  --tracking-meta: 0.18em;
+  --tracking-display: -0.02em;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html, body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * ATMOSPHERE SYSTEM — fixed layers, render order bottom → top:
+ *
+ *  #101215         body background
+ *  z-0  ::before   tungsten warm undertone (breathes 32s)
+ *  z-0  ::after    cool fill counterlight
+ *  z-57 .page-vignette   persistent soft edge-darkening
+ *  z-58 .photocopy       archival paper/scan texture (static)
+ *  z-59 .scanlines       phosphor line integration (32s roll)
+ *  z-60 .grain-slow      coarse slow field drift (38s)
+ *  z-60 .grain           fine photographic jitter (2.8s steps)
+ *
+ * All layers: pointer-events none. Motion slowed vs prior iteration
+ * — cycles are longer, amplitude narrower, so the page reads as
+ * "electrically alive" rather than "animated."
+ */
+
+/* Tungsten undertone — ambient warmth from above, floor shadow below.
+   Breathes at 32s: swing is so narrow (0.96→1.0) it registers only
+   as the memory of having noticed the page change, not as motion. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      ellipse 110% 55% at 50% 0%,
+      rgba(199, 169, 107, 0.022) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 90% 50% at 50% 100%,
+      rgba(26, 19, 12, 0.28) 0%,
+      transparent 58%
+    );
+  animation: ambient-breathe 32s ease-in-out infinite;
+}
+
+@keyframes ambient-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.96; }
+}
+
+/* Cool fill — prevents the tungsten tipping into sepia.
+   Static: a counter-light doesn't flicker. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 50% 32% at 100% 28%,
+    rgba(120, 142, 160, 0.015) 0%,
+    transparent 55%
+  );
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #101215;
+}
+
+/* ─── ARCHIVAL TEXTURE LAYERS ──────────────────────────────────── */
+
+/* Persistent soft vignette — page always has darkened edges.
+   Reads as environmental lighting on a matte display surface,
+   not as a deliberate design effect. Amplitude kept very low. */
+.page-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 57;
+  background: radial-gradient(
+    ellipse 150% 150% at 50% 50%,
+    transparent 32%,
+    rgba(7, 8, 10, 0.28) 70%,
+    rgba(7, 8, 10, 0.46) 100%
+  );
+}
+
+/* Photocopy / darkroom paper layer.
+   600px large-scale fractalNoise reads as uneven exposure from
+   contact printing — not grain, not digital noise. Static.
+   Warm-tinted (slightly amber) to match tungsten source light. */
+.photocopy {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 58;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.88 0 0 0 0 0.72 0 0 0 0.75 0'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>");
+  background-size: 600px 600px;
+  animation: photocopy-drift 54s ease-in-out infinite;
+}
+
+@keyframes photocopy-drift {
+  0%, 100% { background-position:    0px    0px; opacity: 0.04; }
+  33%      { background-position: -140px   90px; opacity: 0.05; }
+  66%      { background-position:   90px  -110px; opacity: 0.035; }
+}
+
+/* Scanlines — integrated into the material surface, not decorative.
+   32s roll: ~0.19 px/s — motion is below conscious perception at rest.
+   Visible only in peripheral vision during page scroll — exactly right.
+   Warm-tinted lines, soft-light blend so they multiply into the surface
+   rather than sitting on top. */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 59;
+  opacity: 0.024;
+  mix-blend-mode: soft-light;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(235, 225, 200, 0.55) 0px,
+    rgba(235, 225, 200, 0.55) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: scanline-roll 18s linear infinite;
+}
+
+@keyframes scanline-roll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 12px; }
+}
+
+/* CRT luminance pump — entire screen ambient brightness drifts.
+   ±2% over 12s. Mimics analog signal AGC trying to hold level.
+   Applied to vignette layer so it doesn't fight grain motion. */
+.page-vignette {
+  animation: crt-luminance 12s ease-in-out infinite;
+}
+@keyframes crt-luminance {
+  0%, 100% { opacity: 1; }
+  35%      { opacity: 0.94; }
+  62%      { opacity: 1.04; }
+}
+
+/* Secondary grain — large-cell slow drift.
+   38s cycle, soft-light: reads as signal noise in the transmission
+   medium, not as surface texture. Warm tint keeps it analog. */
+.grain-slow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.025;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.87 0 0 0 0 0.76 0 0 0 0.65 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 400px 400px;
+  animation: grain-drift 38s linear infinite;
+}
+
+@keyframes grain-drift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 400px -400px; }
+}
+
+/* Primary grain — fine photographic micro-texture.
+   Slowed from 1.6s → 2.8s, steps reduced 8 → 6.
+   Still produces the discrete re-seeding that reads as film grain
+   rather than smooth digital noise — but at a more measured pace.
+   Overlay blend for contrast; low enough opacity to never distract. */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.97 0 0 0 0 0.92 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  animation: grain-jitter 2.8s steps(6) infinite;
+}
+
+@keyframes grain-jitter {
+  0%   { background-position:  0px   0px; }
+  16%  { background-position: -9px   5px; }
+  33%  { background-position:  7px -11px; }
+  50%  { background-position: -5px  10px; }
+  66%  { background-position: 11px  -6px; }
+  83%  { background-position: -8px   8px; }
+  100% { background-position:  0px   0px; }
+}
+
+/* Reduced-motion: kill all atmosphere animation.
+   The page looks identical at rest — only the motion stops. */
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  .grain,
+  .grain-slow,
+  .scanlines,
+  .photocopy,
+  .page-vignette {
+    animation: none !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ─── TYPOGRAPHY ───────────────────────────────────────────────── */
+
+/* Display serif — institutional publishing weight.
+   line-height 0.92: tight but not crushed. Allows dense multi-line
+   headings without becoming poster-like. */
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: var(--tracking-display);
+  line-height: 0.92;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Primary metadata voice — uppercase mono.
+   Matte: no glow, no shadow. Printed feel. */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Amber accent — restraint is critical.
+   Two-stop shadow: inner 4px warm diffusion (phosphor lamp),
+   outer 10px very soft falloff. No bloom. */
+.meta-accent {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(199, 169, 107, 0.20),
+    0 0 10px rgba(199, 169, 107, 0.06);
+}
+
+/* Phosphor warmth utility — isolated small elements only. */
+.phosphor {
+  text-shadow:
+    0 0 4px rgba(199, 169, 107, 0.20),
+    0 0 10px rgba(199, 169, 107, 0.06);
+}
+
+/* Signal indicator — very slow pulse, live-system feel.
+   Applied to a single nav dot. Nowhere else. */
+.signal-pulse {
+  animation: signal-pulse 6s ease-in-out infinite;
+}
+@keyframes signal-pulse {
+  0%, 100% {
+    text-shadow:
+      0 0 3px rgba(199, 169, 107, 0.18),
+      0 0 8px  rgba(199, 169, 107, 0.06);
+  }
+  50% {
+    text-shadow:
+      0 0 5px rgba(199, 169, 107, 0.34),
+      0 0 14px rgba(199, 169, 107, 0.10);
+  }
+}
+
+/* Document reference — quieter sub-label.
+   10px / weight 300 / 0.12em tracking / muted-2 colour.
+   Carries catalog IDs, revision codes, archive references. */
+.doc-ref {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted-2);
+}
+
+/* ─── LINKS ────────────────────────────────────────────────────── */
+
+.link-amber {
+  transition: color 280ms ease, text-shadow 280ms ease;
+}
+.link-amber:hover {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(199, 169, 107, 0.20),
+    0 0 10px rgba(199, 169, 107, 0.06);
+}
+
+/* ─── HOVER ILLUMINATION ───────────────────────────────────────── */
+
+/* Border glow on hover — simulates voltage activating an edge.
+   Inset shadow stays thin (1px equivalent) so it reads as
+   border brightening, not as a glow effect. */
+.hover-illuminate {
+  transition:
+    border-color 320ms ease,
+    box-shadow 320ms ease;
+}
+.hover-illuminate:hover {
+  border-color: rgba(199, 169, 107, 0.22);
+  box-shadow:
+    inset 0 0 0 0px rgba(199, 169, 107, 0),
+    0 0 0 0px rgba(199, 169, 107, 0),
+    inset 1px 0 0 0 rgba(199, 169, 107, 0.07),
+    inset -1px 0 0 0 rgba(199, 169, 107, 0.07),
+    inset 0 1px 0 0 rgba(199, 169, 107, 0.10),
+    inset 0 -1px 0 0 rgba(199, 169, 107, 0.04);
+}
+
+/* Archive row hover — left edge activates, row lightens slightly. */
+.hover-row {
+  transition: background-color 280ms ease, border-left-color 280ms ease;
+  border-left: 2px solid transparent;
+}
+.hover-row:hover {
+  border-left-color: rgba(199, 169, 107, 0.28);
+}
+
+/* Operational label shift — 1px translate on hover, mechanical feel.
+   Use on action labels like "VIEW SYSTEM DATA →" or "READ →". */
+.label-shift {
+  display: inline-block;
+  transition: transform 240ms ease, color 240ms ease;
+}
+.label-shift:hover,
+*:hover > .label-shift,
+.group:hover .label-shift {
+  transform: translateX(1px);
+  color: var(--color-accent);
+}
+
+/* ─── CONTENT REVEALS ──────────────────────────────────────────── */
+
+/* Standard reveal — translateY emergence for structural elements. */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Phosphor emergence — pure luminance stabilization.
+   No translate. Simulates a phosphor screen warming up:
+   opacity climbs with a faint glow haze, then settles flat.
+   For metadata, doc-ref labels, archive entries, table rows. */
+@keyframes phosphor-emerge {
+  0%   { opacity: 0; }
+  55%  { opacity: 0.65; filter: brightness(1.06); }
+  100% { opacity: 1;   filter: brightness(1); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Secondary signal breathe — for status dots outside the navbar.
+   Slower and more restrained than signal-pulse. */
+@keyframes signal-breathe {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 1; }
+}
+
+.reveal           { animation: reveal-up 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.reveal-delay-1   { animation-delay: 0.1s; }
+.reveal-delay-2   { animation-delay: 0.2s; }
+.reveal-delay-3   { animation-delay: 0.32s; }
+.reveal-delay-4   { animation-delay: 0.44s; }
+.reveal-delay-5   { animation-delay: 0.58s; }
+.reveal-delay-6   { animation-delay: 0.74s; }
+.fade-in          { animation: fade-in 1.1s ease-out both; }
+.phosphor-emerge  { animation: phosphor-emerge 1.1s ease-out both; }
+.signal-breathe   { animation: signal-breathe 9s ease-in-out infinite; }
+
+/* ─── STRUCTURAL ───────────────────────────────────────────────── */
+
+hr.rule {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 0;
+}
+
+/* Printed double-rule — IBM manual feel. */
+.rule-double {
+  border: 0;
+  border-top: 3px double rgba(255, 255, 255, 0.07);
+  margin: 0;
+}
+
+/* Section vignette — for individual sections that need edge-darkening.
+   Kept for legacy use; page-vignette handles global edges. */
+.vignette {
+  background: radial-gradient(
+    ellipse at center,
+    transparent 48%,
+    rgba(6, 7, 9, 0.50) 100%
+  );
+}
+
+/* Tungsten top-edge reflection on elevated panels. */
+.panel-tungsten {
+  background:
+    linear-gradient(180deg, rgba(255, 240, 210, 0.012) 0%, transparent 10%),
+    var(--color-panel);
+}
+
+/* Faint surface micro-texture on panels — darkroom paper quality.
+   Apply to sections that need extra material depth.
+   Use as background-image addition via inline style or Tailwind bg. */
+.surface-matte::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='s'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23s)' opacity='0.6'/></svg>");
+  background-size: 300px 300px;
+}
+.surface-matte { position: relative; }
+.surface-matte > * { position: relative; z-index: 1; }
+
+.index-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--color-muted-2);
+}
+
+@keyframes mobile-menu-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Page-change emergence — phosphor switching channels.
+   Brightness flare, slight Y-settle, then stabilizes.
+   Used by PageTransition on every route change. */
+@keyframes page-emerge {
+  0%   { opacity: 0; transform: translateY(4px); filter: brightness(1.08); }
+  55%  { opacity: 0.75;                          filter: brightness(1.03); }
+  100% { opacity: 1; transform: translateY(0);   filter: brightness(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-delay-1, .reveal-delay-2,
+  .reveal-delay-3, .reveal-delay-4, .reveal-delay-5, .reveal-delay-6,
+  .fade-in, .phosphor-emerge {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .signal-pulse, .signal-breathe { animation: none; opacity: 1; }
+  .label-shift { transition: none; }
+  .hover-illuminate { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Page transitions also disabled */
+  div[style*="page-emerge"] {
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
 }
