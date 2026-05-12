@@ -17,7 +17,7 @@ export default function FeaturedProduct({ product }) {
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
 
           {/* Glyph panel */}
-          <div className="lg:col-span-7 border border-border bg-panel relative">
+          <div className="lg:col-span-7 border border-border bg-panel relative archival-plate">
             <ProductGlyph slug={product.slug} className="w-full h-auto text-text" />
             {/* Catalog overlay strip */}
             <div className="absolute bottom-0 left-0 right-0 border-t border-border bg-panel/80 px-5 py-3 flex justify-between items-center">

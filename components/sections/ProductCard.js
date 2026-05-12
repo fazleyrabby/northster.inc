@@ -10,7 +10,7 @@ export default function ProductCard({ product, index }) {
       className="group block border border-border bg-panel hover-illuminate"
     >
       {/* Glyph + catalog header */}
-      <div className="aspect-[4/3] overflow-hidden border-b border-border relative">
+      <div className="aspect-[4/3] overflow-hidden border-b border-border relative archival-plate">
         <ProductGlyph
           slug={product.slug}
           className="w-full h-full text-text transition-transform duration-700 ease-out group-hover:scale-[1.012]"

@@ -3,6 +3,8 @@ import Container from "./Container";
 import NavMobile from "./NavMobile";
 import { NAV, SITE } from "@/lib/constants";
 
+import ThemeToggle from "@/components/atmosphere/ThemeToggle";
+
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-[3px]" style={{"--navbar-h": "88px"}}>
@@ -10,10 +12,12 @@ export default function Navbar() {
       {/* ── Top classification strip ─────────────────────────── */}
       <div className="border-b border-border bg-panel/60">
         <Container size="wide">
-          <div className="py-1.5 flex justify-between items-center gap-4">
-            <div className="flex gap-x-6 flex-wrap gap-y-0.5">
+          <div className="py-1 flex justify-between items-center gap-4">
+            <div className="flex gap-x-6 items-center">
               <span className="doc-ref">NS-SYS-INDEX / COMPUTATIONAL DIVISION</span>
-              <span className="doc-ref hidden sm:inline">INTERNAL DISTRIBUTION</span>
+              <div className="hidden sm:block">
+                <ThemeToggle />
+              </div>
             </div>
             <div className="flex items-center gap-2">
               <span className="meta meta-accent signal-pulse">●</span>

@@ -25,16 +25,20 @@ export const metadata = {
     "Northster Inc. — engineered for signal stability. Computational systems, neural workstations, and monochrome interfaces from a parallel timeline.",
 };
 
+import ThemeProvider from "@/components/atmosphere/ThemeProvider";
+
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-background text-text" suppressHydrationWarning>
-        <GrainOverlay />
-        <Navbar />
-        <main className="flex-1">
-          <PageTransition>{children}</PageTransition>
-        </main>
-        <Footer />
+        <ThemeProvider>
+          <GrainOverlay />
+          <Navbar />
+          <main className="flex-1">
+            <PageTransition>{children}</PageTransition>
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
