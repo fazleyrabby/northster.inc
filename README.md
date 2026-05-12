@@ -1,3 +1,6 @@
+<img width="3384" height="3546" alt="CleanShot 2026-05-12 at 14 22 35@2x" src="https://github.com/user-attachments/assets/bc9f27f4-848b-431a-987c-e4dcf1775b66" />
+
+
 # NORTHSTER INC.
 
 > *A preserved computational archive from another timeline.*
