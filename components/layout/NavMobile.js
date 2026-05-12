@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV } from "@/lib/constants";
+import ThemeToggle from "@/components/atmosphere/ThemeToggle";
 
 export default function NavMobile() {
   const [open, setOpen] = useState(false);
@@ -87,6 +88,9 @@ export default function NavMobile() {
 
       <div className="mt-auto px-6 py-6 border-t border-border/20 bg-panel/10">
         <div className="space-y-4">
+          <div className="pb-4 border-b border-border/20">
+            <ThemeToggle />
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <span className="meta meta-accent signal-pulse text-[8px]">●</span>

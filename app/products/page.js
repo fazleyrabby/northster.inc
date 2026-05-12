@@ -58,7 +58,7 @@ export default function ProductsPage() {
           </div>
 
           {/* Catalogue index table — compact listing above the cards */}
-          <div className="border border-border mb-0">
+          <div className="border border-border mb-0 hidden md:block">
             <div className="border-b border-border bg-panel-2 px-5 py-2 grid grid-cols-12 gap-4">
               <span className="col-span-1 doc-ref">NO.</span>
               <span className="col-span-2 doc-ref">CODE</span>

@@ -17,14 +17,14 @@ export default function Hero() {
       {/* ── Document classification bar — topmost strip ─────── */}
       <div className="border-b border-border bg-panel-2">
         <Container size="wide">
-          <div className="py-2 grid grid-cols-12 gap-4 items-center">
-            <div className="col-span-7 flex flex-wrap gap-x-6 gap-y-0.5">
+          <div className="py-2 flex flex-wrap justify-between items-center gap-x-4 gap-y-0.5">
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 min-w-0">
               <span className="doc-ref phosphor-emerge">NORTHSTER INC. / COMPUTATIONAL DIVISION</span>
-              <span className="doc-ref phosphor-emerge reveal-delay-1">NS-SYS-INDEX / REVISION IV</span>
-              <span className="doc-ref phosphor-emerge reveal-delay-2">ARCHIVE DIV. 04</span>
+              <span className="doc-ref phosphor-emerge reveal-delay-1 hidden sm:inline">NS-SYS-INDEX / REVISION IV</span>
+              <span className="doc-ref phosphor-emerge reveal-delay-2 hidden md:inline">ARCHIVE DIV. 04</span>
             </div>
-            <div className="col-span-5 flex justify-end items-center gap-x-5 flex-wrap gap-y-0.5">
-              <span className="doc-ref phosphor-emerge reveal-delay-2">EST. 1978 — NORTHERN PROVINCES</span>
+            <div className="flex items-center gap-x-4 flex-wrap gap-y-0.5 shrink-0">
+              <span className="doc-ref phosphor-emerge reveal-delay-2 hidden sm:inline">EST. 1978 — NORTHERN PROVINCES</span>
               <span className="doc-ref phosphor-emerge reveal-delay-3 inline-flex items-center gap-1.5">
                 <span className="meta meta-accent signal-pulse">●</span>
                 CH.04 STABLE
@@ -175,9 +175,9 @@ export default function Hero() {
 
         {/* ── Stats strip ───────────────────────────────────── */}
         <div className="border-t border-border-strong">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-x divide-border">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 md:divide-x md:divide-border">
             {STATS.map((s) => (
-              <div key={s.k} className="py-4 px-5 flex flex-col gap-1 first:pl-0">
+              <div key={s.k} className="py-4 px-5 flex flex-col gap-1 border-b border-border md:border-b-0">
                 <MetaLabel>{s.k}</MetaLabel>
                 <span className="font-display text-2xl">{s.v}</span>
               </div>

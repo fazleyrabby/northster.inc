@@ -53,20 +53,19 @@ export default async function ProductPage({ params }) {
       {/* ── Document classification header ───────────────────── */}
       <div className="border-b border-border bg-panel-2">
         <Container size="wide">
-          <div className="py-2 grid grid-cols-12 gap-4 items-center">
-            <div className="col-span-6 flex flex-wrap gap-x-6 gap-y-0.5">
+          <div className="py-2 flex flex-wrap justify-between items-center gap-x-4 gap-y-0.5">
+            <div className="flex flex-wrap gap-x-4 gap-y-0.5 min-w-0">
               <span className="doc-ref">NORTHSTER INC. / {product.division}</span>
-              <span className="doc-ref hidden md:block opacity-30">|</span>
-              <span className="doc-ref hidden md:block">RECORD_STATUS: PRESERVED</span>
+              <span className="doc-ref hidden md:inline">RECORD_STATUS: PRESERVED</span>
             </div>
-            <div className="col-span-6 flex justify-end flex-wrap gap-x-5 gap-y-0.5">
-              <span className="doc-ref">ARCHIVE_ID: {product.archiveId}</span>
-              <span className="doc-ref">PART_NO: {product.partNumber}</span>
+            <div className="flex flex-wrap justify-end gap-x-4 gap-y-0.5 shrink-0">
+              <span className="doc-ref hidden sm:inline">ARCHIVE_ID: {product.archiveId}</span>
+              <span className="doc-ref hidden md:inline">PART_NO: {product.partNumber}</span>
               <span className="doc-ref border border-border px-1.5 bg-background">
-                CLEARANCE: {" "}
+                CLEARANCE:{" "}
                 {isRestricted
                   ? <span className="text-accent/90">RESTRICTED</span>
-                  : "UNRESTRICTED"}
+                  : "OPEN"}
               </span>
             </div>
           </div>
@@ -101,10 +100,10 @@ export default async function ProductPage({ params }) {
                 <span className="w-8 h-[1px] bg-border-strong" />
                 <span className="doc-ref text-xs tracking-[0.3em] opacity-40">{product.year}</span>
               </div>
-              <h1 className="font-display text-7xl md:text-9xl leading-[0.88] reveal">
+              <h1 className="font-display text-5xl sm:text-7xl md:text-9xl leading-[0.88] reveal break-words">
                 {product.code}
               </h1>
-              <p className="font-display italic text-3xl md:text-4xl text-muted mt-6 reveal reveal-delay-1 max-w-2xl leading-tight">
+              <p className="font-display italic text-2xl md:text-4xl text-muted mt-6 reveal reveal-delay-1 max-w-2xl leading-tight">
                 {product.name}
               </p>
             </div>
@@ -267,7 +266,7 @@ export default async function ProductPage({ params }) {
               </p>
             </div>
           </div>
-          <div className="md:col-span-7 md:col-start-6 space-y-8 border-l border-border-strong pl-8 md:pl-12">
+          <div className="md:col-span-7 md:col-start-6 space-y-8 md:border-l border-border-strong md:pl-12 pt-8 md:pt-0 border-t md:border-t-0">
             <Divider label="ENGINEERING_NOTES" />
             {product.notes.map((n, i) => (
               <p key={i} className="text-sm md:text-base text-text/80 leading-relaxed font-mono italic">
@@ -284,34 +283,36 @@ export default async function ProductPage({ params }) {
           <Container size="wide" className="py-12 md:py-16">
             <Divider label="04 — FIELD NOTES / OPERATIONAL LOG" meta={`${product.archiveId} / ${product.fieldNotes.length} ENTRIES`} />
 
-            <div className="mt-8 border border-border">
-              <div className="border-b border-border bg-panel-2 px-5 py-2 grid grid-cols-12 gap-4">
-                <span className="col-span-2 doc-ref">ID</span>
-                <span className="col-span-2 doc-ref">DATE</span>
-                <span className="col-span-2 doc-ref">DIVISION</span>
-                <span className="col-span-6 doc-ref">NOTATION</span>
-              </div>
-              {product.fieldNotes.map((note, i) => (
-                <div
-                  key={note.id}
-                  className={`grid grid-cols-12 gap-4 border-b border-border last:border-b-0 hover:bg-panel/40 transition-colors duration-300 ${i % 2 === 0 ? "bg-panel-2/30" : ""}`}
-                >
-                  <div className="col-span-2 px-5 py-4 border-r border-border">
-                    <span className="doc-ref">{note.id}</span>
-                  </div>
-                  <div className="col-span-2 px-4 py-4 border-r border-border">
-                    <span className="doc-ref">{note.date}</span>
-                  </div>
-                  <div className="col-span-2 px-4 py-4 border-r border-border">
-                    <span className="doc-ref">{note.division}</span>
-                  </div>
-                  <div className="col-span-6 px-4 py-4">
-                    <p className={`text-xs leading-relaxed ${isRestricted ? "text-accent/60" : "text-text/70"}`}>
-                      {note.text}
-                    </p>
-                  </div>
+            <div className="mt-8 border border-border overflow-x-auto">
+              <div className="min-w-[560px]">
+                <div className="border-b border-border bg-panel-2 px-5 py-2 grid grid-cols-12 gap-4">
+                  <span className="col-span-2 doc-ref">ID</span>
+                  <span className="col-span-2 doc-ref">DATE</span>
+                  <span className="col-span-2 doc-ref">DIVISION</span>
+                  <span className="col-span-6 doc-ref">NOTATION</span>
                 </div>
-              ))}
+                {product.fieldNotes.map((note, i) => (
+                  <div
+                    key={note.id}
+                    className={`grid grid-cols-12 gap-4 border-b border-border last:border-b-0 hover:bg-panel/40 transition-colors duration-300 ${i % 2 === 0 ? "bg-panel-2/30" : ""}`}
+                  >
+                    <div className="col-span-2 px-5 py-4 border-r border-border">
+                      <span className="doc-ref">{note.id}</span>
+                    </div>
+                    <div className="col-span-2 px-4 py-4 border-r border-border">
+                      <span className="doc-ref">{note.date}</span>
+                    </div>
+                    <div className="col-span-2 px-4 py-4 border-r border-border">
+                      <span className="doc-ref">{note.division}</span>
+                    </div>
+                    <div className="col-span-6 px-4 py-4">
+                      <p className={`text-xs leading-relaxed ${isRestricted ? "text-accent/60" : "text-text/70"}`}>
+                        {note.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </Container>
         </section>

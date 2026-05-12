@@ -28,43 +28,44 @@ export default function Navbar() {
       {/* ── RAIL A: SYSTEM STATUS / MOBILE ROW 1 ──────────────── */}
       <div className="border-b border-border/40 bg-panel/30">
         <Container size="wide">
-          <div className="py-1 md:py-0.5 flex justify-between items-center gap-4 opacity-70 md:hover:opacity-100 transition-opacity duration-500">
-            <div className="flex gap-x-6 items-center">
-              <div className="flex items-center gap-4">
+          <div className="py-1 md:py-0.5 flex justify-between items-center gap-2 opacity-70 md:hover:opacity-100 transition-opacity duration-500 min-w-0 overflow-hidden">
+            <div className="flex gap-x-4 items-center min-w-0 overflow-hidden">
+              <div className="flex items-center gap-3 shrink-0">
                 <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">SYS: STABLE</span>
-                
-                <div className="flex items-center gap-4">
-                  <button 
+
+                <div className="flex items-center gap-2">
+                  <button
                     onClick={toggleAudio}
-                    className={`doc-ref text-[8px] md:text-[9px] tracking-[0.2em] transition-colors ${isAudioEnabled ? "text-accent" : "hover:text-accent/60"}`}
+                    className={`doc-ref text-[8px] md:text-[9px] tracking-[0.2em] transition-colors shrink-0 ${isAudioEnabled ? "text-accent" : "hover:text-accent/60"}`}
                   >
-                    AUDIO: {isAudioEnabled ? "ACTIVE / CH.04" : "MUTED"}
+                    AUDIO: {isAudioEnabled ? "ACTIVE" : "MUTED"}
                   </button>
 
                   {isAudioEnabled && (
-                    <div className="flex items-center gap-3 group/volume">
+                    <div className="hidden sm:flex items-center gap-2 group/volume">
                       <span className="doc-ref text-[8px] opacity-40">VOL: {Math.round(volume * 100)}%</span>
-                      <input 
+                      <input
                         type="range"
                         min="0"
                         max="1"
                         step="0.01"
                         value={volume}
                         onChange={(e) => setVolume(parseFloat(e.target.value))}
-                        className="w-16 h-[1px] bg-border appearance-none cursor-crosshair accent-accent"
+                        className="w-14 h-[1px] bg-border appearance-none cursor-crosshair accent-accent"
                       />
                     </div>
                   )}
                 </div>
               </div>
-              <div className="hidden sm:block scale-90 origin-left">
+              <div className="hidden sm:block scale-90 origin-left shrink-0">
                 <ThemeToggle />
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 shrink-0">
               <div className="flex items-center gap-1.5">
                 <span className="meta meta-accent signal-pulse text-[8px]">●</span>
-                <span className="doc-ref text-[8px] md:text-[9px]">SIGNAL_STABLE / CH.04</span>
+                <span className="doc-ref text-[8px] md:text-[9px] hidden sm:block">SIGNAL_STABLE / CH.04</span>
+                <span className="doc-ref text-[8px] sm:hidden">CH.04</span>
               </div>
               <span className="doc-ref text-[9px] hidden md:block">EST. 1978 / DIV. 04</span>
             </div>
@@ -108,10 +109,7 @@ export default function Navbar() {
               })}
             </nav>
 
-            <div className="flex items-center gap-4 md:hidden">
-              <div className="scale-75 origin-right">
-                <ThemeToggle />
-              </div>
+            <div className="flex items-center gap-3 md:hidden">
               <NavMobile />
             </div>
           </div>
@@ -121,11 +119,11 @@ export default function Navbar() {
       {/* ── RAIL C: CONTEXTUAL ARCHIVE / MOBILE ROW 3 ─────────── */}
       <div className="border-b border-border/40 bg-panel/10">
         <Container size="wide">
-          <div className="py-1.5 flex justify-between items-center opacity-80">
-            <div className="flex gap-x-4 items-center">
-              <span className="doc-ref text-[9px] md:text-[10px] uppercase tracking-wider">{getContext()}</span>
+          <div className="py-1.5 flex justify-between items-center gap-4 opacity-80 min-w-0 overflow-hidden">
+            <div className="flex gap-x-4 items-center min-w-0 overflow-hidden">
+              <span className="doc-ref text-[9px] md:text-[10px] uppercase tracking-wider truncate">{getContext()}</span>
             </div>
-            <div className="flex items-center gap-4 md:gap-6">
+            <div className="flex items-center gap-4 md:gap-6 shrink-0">
               <span className="doc-ref text-[9px] md:text-[10px] tabular-nums">REV: 04.22</span>
               <span className="doc-ref text-[10px] hidden lg:block uppercase tracking-widest opacity-40">Classification: Restricted</span>
             </div>
