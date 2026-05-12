@@ -12,23 +12,21 @@ export default function Navbar() {
 
   // Dynamic context for the Archive Rail
   const getContext = () => {
-    if (pathname === "/") return "ROOT / SYSTEM INDEX";
-    if (pathname.startsWith("/products/")) {
-      const slug = pathname.split("/").pop();
-      return `RECORD: NS-${slug?.toUpperCase().replace(/-/g, "")} / PRODUCT ARCHIVE`;
-    }
-    if (pathname.startsWith("/products")) return "CATALOG: NS-CAT-001 / PRODUCT INDEX";
+    if (pathname.startsWith("/archive/documents")) return "SEGMENT: DOC_ARCHIVE / INTERNAL_RECORDS";
+    if (pathname.startsWith("/archive")) return "SEGMENT: INSTITUTIONAL_ARCHIVE / DIV_04";
+    if (pathname.startsWith("/labs")) return "FACILITY: NORTHSTER_LABS / RESEARCH_NODE";
+    if (pathname.startsWith("/network")) return "NETWORK: RELAY_MAP / SIGNAL_DIVISION";
     const item = NAV.find(n => n.href === pathname);
-    return item ? `DIVISION: ${item.label} / RECORD REVISION IV` : "NORTHSTER ARCHIVE SYSTEM";
+    return item ? `SEGMENT: ${item.label.toUpperCase()} / RECORD_REV_IV` : "NORTHSTER_SYSTEM_ARCHIVE";
   };
 
   return (
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-[3px]">
 
       {/* ── RAIL A: SYSTEM STATUS / MOBILE ROW 1 ──────────────── */}
-      <div className="border-b border-border/20 bg-panel/30">
+      <div className="border-b border-border/40 bg-panel/30">
         <Container size="wide">
-          <div className="py-1 md:py-0.5 flex justify-between items-center gap-4 opacity-50 md:hover:opacity-100 transition-opacity duration-500">
+          <div className="py-1 md:py-0.5 flex justify-between items-center gap-4 opacity-70 md:hover:opacity-100 transition-opacity duration-500">
             <div className="flex gap-x-4 items-center">
               <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">SYS: STABLE</span>
               <div className="hidden sm:block scale-90 origin-left">
@@ -38,7 +36,7 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <span className="meta meta-accent signal-pulse text-[8px]">●</span>
-                <span className="doc-ref text-[8px] md:text-[9px]">CH.04 / NODE:6</span>
+                <span className="doc-ref text-[8px] md:text-[9px]">SIGNAL_STABLE / CH.04</span>
               </div>
               <span className="doc-ref text-[9px] hidden md:block">EST. 1978 / DIV. 04</span>
             </div>
@@ -47,7 +45,7 @@ export default function Navbar() {
       </div>
 
       {/* ── RAIL B: PRIMARY NAVIGATION / MOBILE ROW 2 ──────────── */}
-      <div className="border-b border-border/30">
+      <div className="border-b border-border/50">
         <Container size="wide">
           <div className="flex items-center justify-between h-14 md:h-16">
             <Link href="/" className="flex items-baseline gap-3 group">
@@ -60,7 +58,7 @@ export default function Navbar() {
               </div>
             </Link>
 
-            <nav className="hidden md:flex items-center h-full border-l border-r border-border/30 divide-x divide-border/30">
+            <nav className="hidden md:flex items-center h-full border-l border-r border-border/50 divide-x divide-border/50">
               {NAV.slice(1).map((item) => {
                 const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
                 return (
@@ -93,9 +91,9 @@ export default function Navbar() {
       </div>
 
       {/* ── RAIL C: CONTEXTUAL ARCHIVE / MOBILE ROW 3 ─────────── */}
-      <div className="border-b border-border/20 bg-panel/10">
+      <div className="border-b border-border/40 bg-panel/10">
         <Container size="wide">
-          <div className="py-1.5 flex justify-between items-center opacity-60 md:opacity-70">
+          <div className="py-1.5 flex justify-between items-center opacity-80">
             <div className="flex gap-x-4 items-center">
               <span className="doc-ref text-[9px] md:text-[10px] uppercase tracking-wider">{getContext()}</span>
             </div>

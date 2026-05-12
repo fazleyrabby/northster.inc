@@ -4,6 +4,7 @@ import MetaLabel from "@/components/ui/MetaLabel";
 import Divider from "@/components/ui/Divider";
 import CTASection from "@/components/sections/CTASection";
 import { labsProjects } from "@/data/archive";
+import EngineeringNote from "@/components/archival/EngineeringNote";
 
 export const metadata = { title: "Labs — NORTHSTER INC." };
 
@@ -54,10 +55,42 @@ export default function LabsPage() {
               </p>
               <div className="mt-10 pt-6 border-t border-border-soft flex justify-between">
                 <MetaLabel>NS / LAB</MetaLabel>
-                <MetaLabel className="link-amber">VIEW PROGRAMME →</MetaLabel>
+                <MetaLabel className="link-amber cursor-pointer">VIEW PROGRAMME →</MetaLabel>
               </div>
             </article>
           ))}
+        </div>
+      </EditorialSection>
+
+      <EditorialSection>
+        <Divider label="02 — ENGINEERING OBSERVATIONS" />
+        <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <EngineeringNote
+            date="1987.05.14"
+            author="CHIEF ENG. VARN"
+            title="Observations on High-Altitude Signal Capture"
+          >
+            <p>
+              The receivers at Station Tyra have begun to pick up harmonics that do not correspond to any known meteorological phenomena. The patterns are recursive.
+            </p>
+            <p>
+              We have adjusted the tungsten filtration. The signal remains stable, though its source continues to elude triangulated capture.
+            </p>
+          </EngineeringNote>
+
+          <EngineeringNote
+            date="1991.11.02"
+            author="SNR RES. HALDOR"
+            title="Neural Linkage / Phase I Field Trials"
+            classification="RESTRICTED"
+          >
+            <p>
+              Subject reports a sensation of 'mechanical stillness' when interfaced with the AX-01 array. The auditory signal is described as 'distant wind on metal'.
+            </p>
+            <p>
+              Stability remains at 98.4%. We are proceeding with secondary link tests under Revision IV protocols.
+            </p>
+          </EngineeringNote>
         </div>
       </EditorialSection>
 

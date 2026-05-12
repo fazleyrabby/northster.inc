@@ -1,4 +1,5 @@
 import Container from "@/components/layout/Container";
+import Link from "next/link";
 import EditorialSection from "@/components/sections/EditorialSection";
 import ArchiveItem from "@/components/sections/ArchiveItem";
 import TimelineBlock from "@/components/sections/TimelineBlock";
@@ -37,14 +38,48 @@ export default function ArchivePage() {
       </section>
 
       <EditorialSection>
-        <Divider label="01 — TIMELINE" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Link href="/archive/documents" className="group border border-border-strong bg-panel/30 p-8 hover:border-accent/40 transition-colors archival-plate">
+            <MetaLabel className="mb-6">SEGMENT: DOCUMENTATION</MetaLabel>
+            <h3 className="font-display text-4xl mb-4 group-hover:text-accent transition-colors">Engineering Records</h3>
+            <p className="text-sm text-muted leading-relaxed font-mono">Recovered maintenance logs, engineering notes, and internal manufacturing notices. Classified under Revision IV protocol.</p>
+            <div className="mt-8 pt-6 border-t border-border-soft flex justify-between items-center">
+              <span className="doc-ref text-[10px] opacity-40">NS-ARC-DOC</span>
+              <span className="doc-ref text-[10px] link-amber">ACCESS_ARCHIVE →</span>
+            </div>
+          </Link>
+
+          <Link href="/archive/transmissions" className="group border border-border-strong bg-panel/30 p-8 hover:border-accent/40 transition-colors archival-plate">
+            <MetaLabel className="mb-6">SEGMENT: TRANSMISSIONS</MetaLabel>
+            <h3 className="font-display text-4xl mb-4 group-hover:text-accent transition-colors">Signal Capture</h3>
+            <p className="text-sm text-muted leading-relaxed font-mono">Passive recordings from the Northern Relay Chain. Continuous waterfall capture data recovered through 1998.</p>
+            <div className="mt-8 pt-6 border-t border-border-soft flex justify-between items-center">
+              <span className="doc-ref text-[10px] opacity-40">NS-ARC-TX</span>
+              <span className="doc-ref text-[10px] link-amber">ACCESS_TRANS →</span>
+            </div>
+          </Link>
+
+          <Link href="/archive/divisions" className="group border border-border-strong bg-panel/30 p-8 hover:border-accent/40 transition-colors archival-plate">
+            <MetaLabel className="mb-6">SEGMENT: STRUCTURE</MetaLabel>
+            <h3 className="font-display text-4xl mb-4 group-hover:text-accent transition-colors">Institutional Divisions</h3>
+            <p className="text-sm text-muted leading-relaxed font-mono">The organizational architecture of Northster Inc. Focus, terminology, and status records for all branches.</p>
+            <div className="mt-8 pt-6 border-t border-border-soft flex justify-between items-center">
+              <span className="doc-ref text-[10px] opacity-40">NS-ARC-DIV</span>
+              <span className="doc-ref text-[10px] link-amber">VIEW_DIVISIONS →</span>
+            </div>
+          </Link>
+        </div>
+      </EditorialSection>
+
+      <EditorialSection>
+        <Divider label="01 — INSTITUTIONAL TIMELINE" />
         <div className="mt-14">
           <TimelineBlock entries={timeline} />
         </div>
       </EditorialSection>
 
       <EditorialSection>
-        <Divider label="02 — ENTRIES" />
+        <Divider label="02 — RECORD FRAGMENTS" />
         <div className="mt-12">
           {archiveEntries.map((e) => (
             <ArchiveItem key={e.id} entry={e} />
@@ -53,9 +88,9 @@ export default function ArchivePage() {
       </EditorialSection>
 
       <CTASection
-        label="TRANSMISSION / 02"
-        title="The record continues to expand. Listen, occasionally."
-        cta="VIEW LABS"
+        label="FACILITY / 02"
+        title="Research continues at the speed of its environment."
+        cta="VIEW RESEARCH LABS"
         href="/labs"
       />
     </>
