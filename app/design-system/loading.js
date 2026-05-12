@@ -14,6 +14,7 @@ export default function Loading() {
           <Skeleton className="md:col-span-9 h-20 md:h-24" />
           <Skeleton className="md:col-span-3 h-16 mt-6" />
         </div>
-      </section>
+      </Container>
+    </section>
   );
 }

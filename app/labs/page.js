@@ -85,7 +85,7 @@ export default function LabsPage() {
             classification="RESTRICTED"
           >
             <p>
-              Subject reports a sensation of 'mechanical stillness' when interfaced with the AX-01 array. The auditory signal is described as 'distant wind on metal'.
+              Subject reports a sensation of &apos;mechanical stillness&apos; when interfaced with the AX-01 array. The auditory signal is described as &apos;distant wind on metal&apos;.
             </p>
             <p>
               Stability remains at 98.4%. We are proceeding with secondary link tests under Revision IV protocols.

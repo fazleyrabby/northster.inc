@@ -6,9 +6,11 @@ import Container from "./Container";
 import NavMobile from "./NavMobile";
 import { NAV, SITE } from "@/lib/constants";
 import ThemeToggle from "@/components/atmosphere/ThemeToggle";
+import { useAudio } from "@/components/atmosphere/AudioManager";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { isAudioEnabled, toggleAudio, volume, setVolume } = useAudio();
 
   // Dynamic context for the Archive Rail
   const getContext = () => {
@@ -27,8 +29,34 @@ export default function Navbar() {
       <div className="border-b border-border/40 bg-panel/30">
         <Container size="wide">
           <div className="py-1 md:py-0.5 flex justify-between items-center gap-4 opacity-70 md:hover:opacity-100 transition-opacity duration-500">
-            <div className="flex gap-x-4 items-center">
-              <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">SYS: STABLE</span>
+            <div className="flex gap-x-6 items-center">
+              <div className="flex items-center gap-4">
+                <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">SYS: STABLE</span>
+                
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={toggleAudio}
+                    className={`doc-ref text-[8px] md:text-[9px] tracking-[0.2em] transition-colors ${isAudioEnabled ? "text-accent" : "hover:text-accent/60"}`}
+                  >
+                    AUDIO: {isAudioEnabled ? "ACTIVE / CH.04" : "MUTED"}
+                  </button>
+
+                  {isAudioEnabled && (
+                    <div className="flex items-center gap-3 group/volume">
+                      <span className="doc-ref text-[8px] opacity-40">VOL: {Math.round(volume * 100)}%</span>
+                      <input 
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.01"
+                        value={volume}
+                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                        className="w-16 h-[1px] bg-border appearance-none cursor-crosshair accent-accent"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className="hidden sm:block scale-90 origin-left">
                 <ThemeToggle />
               </div>

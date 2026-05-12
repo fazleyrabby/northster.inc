@@ -50,25 +50,32 @@ export const metadata = {
     ],
   },
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
     apple: "/favicon.png",
   },
 };
 
 import ThemeProvider from "@/components/atmosphere/ThemeProvider";
+import AudioManager from "@/components/atmosphere/AudioManager";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-background text-text" suppressHydrationWarning>
         <ThemeProvider>
-          <GrainOverlay />
-          <Navbar />
-          <main className="flex-1">
-            <PageTransition>{children}</PageTransition>
-          </main>
-          <Footer />
+          <AudioManager>
+            <GrainOverlay />
+            <Navbar />
+            <main className="flex-1">
+              <PageTransition>{children}</PageTransition>
+            </main>
+            <Footer />
+          </AudioManager>
         </ThemeProvider>
       </body>
     </html>
