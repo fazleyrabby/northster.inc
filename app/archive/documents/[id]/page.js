@@ -11,12 +11,12 @@ import {
 } from "@/data/archival";
 
 export async function generateMetadata({ params }) {
-  const { id } = params;
+  const { id } = await params;
   return { title: `${id} — Document Record — NORTHSTER INC.` };
 }
 
-export default function DocumentPage({ params }) {
-  const { id } = params;
+export default async function DocumentPage({ params }) {
+  const { id } = await params;
   
   const doc = [
     ...engineeringNotes.map(d => ({ ...d, type: "ENGINEERING_LOG", category: "TECHNICAL" })),
