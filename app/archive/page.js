@@ -9,7 +9,7 @@ import CTASection from "@/components/sections/CTASection";
 import { archiveEntries } from "@/data/archive";
 import { timeline } from "@/data/timeline";
 
-export const metadata = { title: "Archive — NORTHSTER INC." };
+export const metadata = { title: "Archive" };
 
 export default function ArchivePage() {
   return (

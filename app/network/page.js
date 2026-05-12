@@ -5,7 +5,7 @@ import Divider from "@/components/ui/Divider";
 import CTASection from "@/components/sections/CTASection";
 import { networkNodes } from "@/data/archive";
 
-export const metadata = { title: "Network — NORTHSTER INC." };
+export const metadata = { title: "Network" };
 
 export default function NetworkPage() {
   return (

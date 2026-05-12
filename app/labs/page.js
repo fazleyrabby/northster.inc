@@ -6,7 +6,7 @@ import CTASection from "@/components/sections/CTASection";
 import { labsProjects } from "@/data/archive";
 import EngineeringNote from "@/components/archival/EngineeringNote";
 
-export const metadata = { title: "Labs — NORTHSTER INC." };
+export const metadata = { title: "Labs" };
 
 export default function LabsPage() {
   return (
