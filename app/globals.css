@@ -135,9 +135,17 @@ body > * {
   z-index: 58;
   opacity: 0.04;
   mix-blend-mode: soft-light;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='4' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.88 0 0 0 0 0.72 0 0 0 0.75 0'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><filter id='p'><feTurbulence type='fractalNoise' baseFrequency='0.15' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.88 0 0 0 0 0.72 0 0 0 0.75 0'/></filter><rect width='100%25' height='100%25' filter='url(%23p)'/></svg>");
   background-size: 600px 600px;
   animation: photocopy-drift 54s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .photocopy {
+    display: none;
+  }
 }
 
 @keyframes photocopy-drift {
@@ -166,6 +174,14 @@ body > * {
     transparent 3px
   );
   animation: scanline-roll 18s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .scanlines {
+    display: none;
+  }
 }
 
 @keyframes scanline-roll {
@@ -195,9 +211,17 @@ body > * {
   z-index: 60;
   opacity: 0.025;
   mix-blend-mode: soft-light;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.87 0 0 0 0 0.76 0 0 0 0.65 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.35' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.92 0 0 0 0 0.87 0 0 0 0 0.76 0 0 0 0.65 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 400px 400px;
   animation: grain-drift 38s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .grain-slow {
+    display: none;
+  }
 }
 
 @keyframes grain-drift {
@@ -217,9 +241,19 @@ body > * {
   z-index: 60;
   opacity: 0.055;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.97 0 0 0 0 0.92 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='1' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.97 0 0 0 0 0.92 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 240px 240px;
   animation: grain-jitter 2.8s steps(6) infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@media (max-width: 768px) {
+  .grain {
+    opacity: 0.035;
+    mix-blend-mode: normal;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='1' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 0.97 0 0 0 0 0.92 0 0 0 0.35 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
 }
 
 @keyframes grain-jitter {
@@ -392,6 +426,13 @@ body > * {
   100% { opacity: 1;   filter: brightness(1); }
 }
 
+@media (max-width: 768px) {
+  @keyframes phosphor-emerge {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}
+
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -483,6 +524,13 @@ hr.rule {
   0%   { opacity: 0; transform: translateY(4px); filter: brightness(1.08); }
   55%  { opacity: 0.75;                          filter: brightness(1.03); }
   100% { opacity: 1; transform: translateY(0);   filter: brightness(1); }
+}
+
+@media (max-width: 768px) {
+  @keyframes page-emerge {
+    0%   { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
