@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, IBM_Plex_Mono } from "next/font/google";
+import { Cormorant_Garamond, IBM_Plex_Mono, Syne, DM_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -21,6 +21,20 @@ const cormorant = Cormorant_Garamond({
 
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  display: "swap",
+});
+
+const syne = Syne({
+  variable: "--font-syne",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
   subsets: ["latin"],
   weight: ["300", "400", "500"],
   display: "swap",
