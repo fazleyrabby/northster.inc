@@ -16,10 +16,24 @@
 
   --font-display: var(--font-cormorant), "Cormorant Garamond", "Times New Roman", serif;
   --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
-  --font-sans: var(--font-syne), "Syne", system-ui, sans-serif;
+  --font-sans: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
 
   --tracking-meta: 0.18em;
   --tracking-display: -0.02em;
+}
+
+/* Archive era: IBM Plex Mono as main sans (archival, monospace feel) */
+[data-era="archive"] {
+  --font-sans: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* Future era: Syne as sans (geometric, colder, more spatial)
+   Future display uses Instrument Serif — colder, more computational */
+[data-era="future"] {
+  --font-sans: var(--font-syne), "Syne", system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), "Instrument Serif", serif;
+  --font-display-weight: 400;
+  --tracking-display: 0.02em;
 }
 
 :root {
@@ -817,30 +831,30 @@ hr.rule {
   --glyph-filter: none;
 }
 
-/* FUTURE ERA — DARK MODE: Atmospheric graphite, cold titanium
+/* FUTURE ERA — DARK MODE: Deep void, cold titanium
    Post-digital, institutional, aerospace-infrastructural.
-   Feels like: titanium surfaces, computational white-space, calm inevitability. */
+   Distinctly different from archive - colder, darker, more spatial. */
 [data-era="future"]:not([data-theme="archive-day"]) {
   color-scheme: dark;
-  --background: #0c0e12;
-  --panel: #12151a;
-  --panel-2: #171b21;
-  --elevated: #1c2027;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-soft: rgba(255, 255, 255, 0.04);
-  --border-strong: rgba(255, 255, 255, 0.12);
-  --text: #d4d8e0;
-  --muted: #6b7280;
-  --muted-2: #4b5563;
-  --accent: #a8a4a0;
-  --accent-dim: #78716c;
-  --glyph-dim: rgba(212, 216, 224, 0.04);
-  --glyph-screen: #080a0d;
+  --background: #08090b;
+  --panel: #0e1014;
+  --panel-2: #12151a;
+  --elevated: #161a1f;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-soft: rgba(255, 255, 255, 0.03);
+  --border-strong: rgba(255, 255, 255, 0.10);
+  --text: #c8ccd4;
+  --muted: #5a606a;
+  --muted-2: #3d424a;
+  --accent: #9a9690;
+  --accent-dim: #6b6864;
+  --glyph-dim: rgba(200, 204, 212, 0.03);
+  --glyph-screen: #060709;
   --glyph-filter: none;
-  --ambient-top: rgba(140, 135, 130, 0.012);
-  --ambient-bottom: rgba(10, 12, 16, 0.35);
-  --vignette-mid: rgba(140, 135, 130, 0.04);
-  --vignette-outer: rgba(80, 75, 70, 0.12);
+  --ambient-top: rgba(154, 150, 144, 0.008);
+  --ambient-bottom: rgba(6, 7, 9, 0.40);
+  --vignette-mid: rgba(154, 150, 144, 0.03);
+  --vignette-outer: rgba(60, 57, 54, 0.10);
   --plate-shadow: none;
   --plate-img-filter: none;
 }

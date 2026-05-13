@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, IBM_Plex_Mono, Syne, DM_Mono } from "next/font/google";
+import { Cormorant_Garamond, IBM_Plex_Mono, Syne, DM_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -40,6 +40,13 @@ const dmMono = DM_Mono({
   display: "swap",
 });
 
+const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument-serif",
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+});
+
 export const metadata = {
   metadataBase: new URL("https://northster.inc"),
   title: {
@@ -70,7 +77,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${plexMono.variable} ${syne.variable} ${dmMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${cormorant.variable} ${plexMono.variable} ${syne.variable} ${dmMono.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-background text-text" suppressHydrationWarning>
         {/* Runs before React hydration — applies stored era/theme to prevent CSS flash */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var e=localStorage.getItem("northster-era");if(e==="future")document.documentElement.setAttribute("data-era","future");var t=localStorage.getItem("northster-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()` }} />
