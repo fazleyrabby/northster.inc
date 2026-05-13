@@ -82,6 +82,7 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-x: hidden;
+  isolation: isolate;
 }
 
 /*
@@ -290,7 +291,7 @@ body > * {
 @keyframes crt-luminance {
   0%, 100% { opacity: 1; }
   35%      { opacity: 0.94; }
-  62%      { opacity: 1.04; }
+  62%      { opacity: 1; }
 }
 
 /* Secondary grain — large-cell slow drift.
@@ -368,6 +369,57 @@ body > * {
   .photocopy,
   .page-vignette {
     animation: none !important;
+  }
+}
+
+/* ─── MOBILE PERFORMANCE ────────────────────────────────────────
+   On mobile GPUs, animating multiple position:fixed full-viewport
+   layers causes compositor thrash:
+   - each will-change:transform = a separate full-screen texture
+   - background-position animation triggers repaint every step
+   - blend modes prevent layer merging
+
+   Fix: stop all atmosphere animation on mobile. The static layers
+   are visually identical — the motion is only perceptible on large
+   screens at a distance. will-change:auto releases the GPU textures.
+   ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Kill all atmosphere animations on mobile.
+     Static layers are visually identical — motion is only meaningful
+     on large screens at reading distance. Every stopped animation
+     = one fewer compositing pass per frame on the mobile GPU. */
+  body::before,
+  .grain,
+  .grain-slow,
+  .scanlines,
+  .photocopy,
+  .page-vignette,
+  .phosphor-drift,
+  .operational-breathing {
+    animation: none !important;
+  }
+
+  /* Release will-change — without animation, the compositor promotion
+     hint is wasted memory. Frees full-viewport GPU textures. */
+  .grain,
+  .grain-slow,
+  .scanlines,
+  .photocopy,
+  .phosphor-drift {
+    will-change: auto !important;
+  }
+
+  /* grain: keep static texture, but drop blend mode.
+     mix-blend-mode on a fixed layer forces a separate compositing pass
+     even when static. Normal blending at low opacity is effectively free. */
+  .grain {
+    mix-blend-mode: normal !important;
+    opacity: 0.028 !important;
+  }
+
+  /* phosphor-drift: hide entirely — no value at mobile viewport width */
+  .phosphor-drift {
+    display: none !important;
   }
 }
 
@@ -544,7 +596,7 @@ body > * {
   50%       { opacity: 1; }
 }
 
-.reveal           { animation: reveal-up 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.reveal           { animation: reveal-up 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 .reveal-delay-1   { animation-delay: 0.1s; }
 .reveal-delay-2   { animation-delay: 0.2s; }
 .reveal-delay-3   { animation-delay: 0.32s; }
@@ -697,8 +749,7 @@ hr.rule {
   inset: 0;
   pointer-events: none;
   z-index: 40;
-  background: var(--background);
-  mix-blend-mode: color-burn;
+  background: rgba(7, 8, 10, 0.12);
   animation: operational-breathing 18s ease-in-out infinite alternate;
 }
 
@@ -732,4 +783,393 @@ hr.rule {
   z-index: 60;
   pointer-events: none;
 }
+
+/* ── FUTURE ERA THEME (2225) ─────────────────────────────────────
+   Same company DNA — evolved 200 years. Cooler, quieter, more
+   precise. The amber is gone; steel and ice replaced it.
+   Analog texture eliminated — post-digital surface.            */
+
+/* FUTURE ERA — DARK MODE (default)
+   Lifted from near-black to a visible dark blue-grey.
+   Surfaces have depth again; text reads without strain. */
+[data-era="future"] {
+  color-scheme: dark;
+  --background: #0d1119;
+  --panel: #111827;
+  --panel-2: #141d2e;
+  --elevated: #192334;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text: #d8e6f2;
+  --muted: #5a7898;
+  --muted-2: #3a5068;
+  --accent: #7aa3c8;
+  --accent-dim: #4a7a9b;
+  --glyph-dim: rgba(216, 230, 242, 0.05);
+  --glyph-screen: #080e18;
+  --ambient-top: rgba(90, 140, 210, 0.022);
+  --ambient-bottom: rgba(18, 28, 50, 0.30);
+  --vignette-mid: rgba(6, 9, 16, 0.26);
+  --vignette-outer: rgba(6, 9, 16, 0.46);
+  --plate-shadow: none;
+  --plate-img-filter: none;
+  --glyph-filter: none;
+}
+
+/* FUTURE ERA — LIGHT MODE
+   Clinical, cool, titanium-surface precision.
+   Same restraint as archive-day but post-analog.
+   No warm paper — cold instrument white.           */
+[data-era="future"][data-theme="archive-day"] {
+  color-scheme: light;
+  --background: #eef2f7;
+  --panel: #e5ecf4;
+  --panel-2: #dce5ef;
+  --elevated: #d2dde9;
+  --border: rgba(0, 0, 0, 0.10);
+  --border-soft: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --text: #1c2b3a;
+  --muted: #526880;
+  --muted-2: #8090a8;
+  --accent: #2e6fa8;
+  --accent-dim: #205280;
+  --glyph-dim: rgba(0, 0, 0, 0.04);
+  --glyph-screen: #d8e3ee;
+  --glyph-filter: contrast(1.08) brightness(0.96) saturate(0.85);
+  --ambient-top: rgba(60, 110, 180, 0.03);
+  --ambient-bottom: rgba(100, 140, 190, 0.04);
+  --vignette-mid: rgba(140, 160, 190, 0.06);
+  --vignette-outer: rgba(100, 130, 170, 0.14);
+  --plate-shadow: 0 4px 20px -8px rgba(0,0,0,0.06), 0 2px 10px -4px rgba(0,0,0,0.03);
+  --plate-img-filter: grayscale(0.6) contrast(1.04) brightness(1.08) opacity(0.88);
+}
+
+/* Future era: suppress analog texture — post-digital surface */
+[data-era="future"] .grain,
+[data-era="future"] .grain-slow,
+[data-era="future"] .scanlines,
+[data-era="future"] .photocopy,
+[data-era="future"] .operational-breathing {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+/* Future dark: cooler body gradients */
+[data-era="future"] body::before {
+  background:
+    radial-gradient(
+      ellipse 110% 55% at 50% 0%,
+      rgba(90, 140, 210, 0.024),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 90% 50% at 50% 100%,
+      rgba(18, 28, 50, 0.30),
+      transparent 58%
+    );
+}
+
+/* Future light: clinical cool gradients */
+[data-era="future"][data-theme="archive-day"] body::before {
+  background:
+    radial-gradient(
+      ellipse 110% 55% at 50% 0%,
+      rgba(60, 110, 180, 0.03),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 90% 50% at 50% 100%,
+      rgba(100, 140, 190, 0.04),
+      transparent 58%
+    );
+}
+
+/* Future light: archival plate images */
+[data-era="future"][data-theme="archive-day"] .archival-plate img {
+  mix-blend-mode: multiply;
+}
+
+/* Future light: font display filter */
+[data-era="future"][data-theme="archive-day"] .font-display {
+  filter: contrast(1.04) brightness(0.94) saturate(0.9);
+}
+
+/* Future era: accent shadow in steel-blue register */
+[data-era="future"] .meta-accent {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(122, 163, 200, 0.22),
+    0 0 10px rgba(122, 163, 200, 0.07);
+}
+
+[data-era="future"] .phosphor {
+  text-shadow:
+    0 0 4px rgba(122, 163, 200, 0.22),
+    0 0 10px rgba(122, 163, 200, 0.07);
+}
+
+[data-era="future"] .link-amber:hover {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(122, 163, 200, 0.22),
+    0 0 10px rgba(122, 163, 200, 0.07);
+}
+
+[data-era="future"] .hover-illuminate:hover {
+  border-color: rgba(122, 163, 200, 0.20);
+  box-shadow:
+    inset 1px 0 0 0 rgba(122, 163, 200, 0.06),
+    inset -1px 0 0 0 rgba(122, 163, 200, 0.06),
+    inset 0 1px 0 0 rgba(122, 163, 200, 0.09),
+    inset 0 -1px 0 0 rgba(122, 163, 200, 0.04);
+}
+
+[data-era="future"] .hover-row:hover {
+  border-left-color: rgba(122, 163, 200, 0.25);
+}
+
+/* Future era: signal pulse in ice-blue */
+[data-era="future"] .signal-pulse {
+  animation: signal-pulse-future 8s ease-in-out infinite;
+}
+
+@keyframes signal-pulse-future {
+  0%, 100% {
+    text-shadow:
+      0 0 3px rgba(122, 163, 200, 0.16),
+      0 0 8px rgba(122, 163, 200, 0.05);
+  }
+  50% {
+    text-shadow:
+      0 0 5px rgba(122, 163, 200, 0.30),
+      0 0 14px rgba(122, 163, 200, 0.09);
+  }
+}
+
+/* Future era: chromatic aberration trace on edges */
+[data-era="future"] .page-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right,
+      rgba(200, 100, 80, 0.008) 0%,
+      transparent 3%,
+      transparent 97%,
+      rgba(80, 140, 220, 0.008) 100%
+    );
+  pointer-events: none;
+}
+
+/* Future dark: typography — no filter */
+[data-era="future"] .font-display {
+  filter: none;
+}
+
+/* Future light: signal pulse uses stronger shadow (light bg needs more contrast) */
+[data-era="future"][data-theme="archive-day"] .signal-pulse {
+  animation: signal-pulse-future-day 8s ease-in-out infinite;
+}
+
+@keyframes signal-pulse-future-day {
+  0%, 100% {
+    text-shadow:
+      0 0 3px rgba(46, 111, 168, 0.25),
+      0 0 8px rgba(46, 111, 168, 0.10);
+  }
+  50% {
+    text-shadow:
+      0 0 5px rgba(46, 111, 168, 0.45),
+      0 0 14px rgba(46, 111, 168, 0.18);
+  }
+}
+
+/* Future light: meta-accent uses deeper steel */
+[data-era="future"][data-theme="archive-day"] .meta-accent {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(46, 111, 168, 0.18),
+    0 0 10px rgba(46, 111, 168, 0.06);
+}
+
+[data-era="future"][data-theme="archive-day"] .phosphor {
+  text-shadow:
+    0 0 4px rgba(46, 111, 168, 0.18),
+    0 0 10px rgba(46, 111, 168, 0.06);
+}
+
+[data-era="future"][data-theme="archive-day"] .link-amber:hover {
+  color: var(--color-accent);
+  text-shadow:
+    0 0 4px rgba(46, 111, 168, 0.18),
+    0 0 10px rgba(46, 111, 168, 0.06);
+}
+
+[data-era="future"][data-theme="archive-day"] .hover-illuminate:hover {
+  border-color: rgba(46, 111, 168, 0.22);
+  box-shadow:
+    inset 1px 0 0 0 rgba(46, 111, 168, 0.08),
+    inset -1px 0 0 0 rgba(46, 111, 168, 0.08),
+    inset 0 1px 0 0 rgba(46, 111, 168, 0.12),
+    inset 0 -1px 0 0 rgba(46, 111, 168, 0.05);
+}
+
+[data-era="future"][data-theme="archive-day"] .hover-row:hover {
+  border-left-color: rgba(46, 111, 168, 0.30);
+}
+
+/* Future light: chromatic aberration more visible on light bg */
+[data-era="future"][data-theme="archive-day"] .page-vignette::after {
+  background:
+    linear-gradient(to right,
+      rgba(180, 80, 60, 0.006) 0%,
+      transparent 3%,
+      transparent 97%,
+      rgba(46, 111, 168, 0.006) 100%
+    );
+}
+
+/* ── TEMPORAL TRANSITION OVERLAY ─────────────────────────────────
+   CSS-only cinematic slit-scan transition. No WebGL.
+   Sequence: desaturate → compress → flash → resolve.           */
+
+.temporal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: all;
+  overflow: hidden;
+}
+
+/* Dark veil — builds tension, holds at apex, releases */
+.temporal-bg {
+  position: absolute;
+  inset: 0;
+  background: #040507;
+  animation: temporal-bg 3.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes temporal-bg {
+  0%   { opacity: 0; }
+  28%  { opacity: 0.82; }
+  40%  { opacity: 1; }
+  52%  { opacity: 1; }
+  64%  { opacity: 0.4; }
+  100% { opacity: 0; }
+}
+
+/* Horizontal slit-scan bands — relativistic frame distortion */
+.temporal-lines {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      transparent 47.5%,
+      rgba(190, 215, 240, 0.50) 49.8%,
+      rgba(210, 230, 250, 0.90) 50%,
+      rgba(190, 215, 240, 0.50) 50.2%,
+      transparent 52.5%
+    ),
+    repeating-linear-gradient(to bottom,
+      transparent 0px,
+      transparent 9px,
+      rgba(170, 200, 230, 0.055) 9px,
+      rgba(170, 200, 230, 0.055) 10px
+    );
+  transform-origin: center 50%;
+  animation: temporal-lines 1.8s cubic-bezier(0.55, 0, 0.95, 0.85) forwards;
+}
+
+@keyframes temporal-lines {
+  0%   { opacity: 0; transform: scaleY(1) scaleX(1); }
+  18%  { opacity: 1; transform: scaleY(1) scaleX(1); }
+  55%  { opacity: 1; transform: scaleY(0.45) scaleX(1.008); }
+  88%  { opacity: 1; transform: scaleY(0.0005) scaleX(1); }
+  100% { opacity: 0; transform: scaleY(0) scaleX(1); }
+}
+
+/* Edge convergence — top/bottom close in toward center line */
+.temporal-convergence {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 5, 7, 0.95) 0%,
+    transparent 38%,
+    transparent 62%,
+    rgba(4, 5, 7, 0.95) 100%
+  );
+  transform-origin: center 50%;
+  animation: temporal-convergence 1.8s cubic-bezier(0.55, 0, 0.95, 0.85) forwards;
+}
+
+@keyframes temporal-convergence {
+  0%   { transform: scaleY(0); opacity: 0; }
+  20%  { opacity: 1; }
+  88%  { transform: scaleY(1.0); opacity: 1; }
+  100% { transform: scaleY(1.0); opacity: 1; }
+}
+
+/* White flash — apex of temporal crossing */
+.temporal-flash {
+  position: absolute;
+  inset: 0;
+  background: #e8f0f8;
+  animation: temporal-flash 3.6s ease-out forwards;
+}
+
+@keyframes temporal-flash {
+  0%, 39%  { opacity: 0; }
+  42%      { opacity: 1; }
+  50%      { opacity: 0.85; }
+  68%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+
+/* Year stamp — large ghost typography during traversal */
+.temporal-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.temporal-label span {
+  font-family: var(--font-mono);
+  font-size: clamp(72px, 14vw, 152px);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: rgba(200, 220, 245, 0.07);
+  white-space: nowrap;
+  animation: temporal-label-anim 3.6s ease-in-out forwards;
+}
+
+@keyframes temporal-label-anim {
+  0%   { opacity: 0; transform: scaleX(1) scaleY(1); filter: blur(24px); }
+  22%  { opacity: 1; filter: blur(6px); transform: scaleX(1) scaleY(1); }
+  46%  { opacity: 0.7; transform: scaleX(12) scaleY(0.04); filter: blur(0px); }
+  60%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Reduced motion: skip overlay entirely — instant era switch */
+@media (prefers-reduced-motion: reduce) {
+  .temporal-overlay { display: none; }
+}
+
+/* ── Era visibility utilities ────────────────────────────────────────────── */
+/* archive-only: visible in archive era, hidden in future era               */
+/* future-only:  hidden in archive era, visible in future era               */
+/* future-only-flex: same but restores to flex (for flex containers)        */
+
+.future-only      { display: none !important; }
+.future-only-flex { display: none !important; }
+
+[data-era="future"] .future-only      { display: block !important; }
+[data-era="future"] .future-only-flex { display: flex  !important; }
+[data-era="future"] .archive-only     { display: none  !important; }
 

@@ -4,7 +4,7 @@ import MetaLabel from "@/components/ui/MetaLabel";
 export default function ArchivalPlate({ src, title, year, code, description }) {
   return (
     <div className="group space-y-6">
-      <div className="relative aspect-[3/4] bg-panel border border-border-strong overflow-hidden archival-plate shadow-xl transition-transform duration-700 hover:scale-[1.01]">
+      <div className="relative aspect-[3/4] bg-panel border border-border-strong overflow-hidden archival-plate shadow-xl transition-transform duration-300 hover:scale-[1.005]">
         <Image
           src={src}
           alt={title}

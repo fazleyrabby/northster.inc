@@ -1,22 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "gsap";
 
-/* Page-change transition.
-   Phosphor-style emergence on every route — a brief luminance flare
-   then settle. The `key` forces React to remount the wrapper on
-   pathname change so the CSS animation re-fires.
-   Reads as a CRT switching channels: a moment of unstable signal,
-   then stabilized image. */
 export default function PageTransition({ children }) {
   const pathname = usePathname();
+  const ref = useRef();
+
+  useGSAP(() => {
+    if (!ref.current) return;
+    gsap.fromTo(
+      ref.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.35, ease: "power2.out", clearProps: "transform,opacity" }
+    );
+  }, { dependencies: [pathname], scope: ref });
+
   return (
-    <div
-      key={pathname}
-      style={{
-        animation: "page-emerge 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both",
-      }}
-    >
+    <div ref={ref}>
       {children}
     </div>
   );

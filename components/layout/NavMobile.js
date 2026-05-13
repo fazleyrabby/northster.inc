@@ -1,34 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV } from "@/lib/constants";
 import ThemeToggle from "@/components/atmosphere/ThemeToggle";
+import TemporalTrigger from "@/components/ui/TemporalTrigger";
+
+// Server returns false, client returns true — no setState needed
+const useIsClient = () =>
+  useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
 export default function NavMobile() {
-  const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  // Track which pathname the menu opened on — auto-closes on navigation
+  const [menuState, setMenuState] = useState({ open: false, openedAt: null });
   const pathname = usePathname();
+  const isClient = useIsClient();
+
+  const isOpen = menuState.open && menuState.openedAt === pathname;
+
+  const openMenu = () => setMenuState({ open: true, openedAt: pathname });
+  const closeMenu = () => setMenuState({ open: false, openedAt: null });
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!mounted) return;
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isClient) return;
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [open, mounted]);
+  }, [isOpen, isClient]);
 
   const overlay = (
     <div
@@ -46,14 +49,14 @@ export default function NavMobile() {
         animation: "mobile-menu-in 0.22s cubic-bezier(0.2,0.7,0.2,1) both",
       }}
     >
-      {/* Close strip — sits at top of overlay so user can dismiss */}
+      {/* Close strip */}
       <div className="border-b border-border/20 bg-panel/30">
         <div className="px-5 py-2 flex justify-between items-center opacity-60">
           <span className="doc-ref text-[10px]">NS-NAV / MOBILE_INDEX.REV4</span>
           <button
             type="button"
             className="meta text-[10px] text-text hover:text-accent transition-colors"
-            onClick={() => setOpen(false)}
+            onClick={closeMenu}
             aria-label="Close menu"
           >
             DISMISS ✕
@@ -68,7 +71,7 @@ export default function NavMobile() {
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
+              onClick={closeMenu}
               className={`flex items-baseline gap-6 px-6 py-4 transition-all duration-300 ${active ? "bg-accent/5 border-l-2 border-accent" : "border-l-2 border-transparent"}`}
             >
               <span className="doc-ref text-[10px] w-6 opacity-30">{String(i + 1).padStart(2, "0")}</span>
@@ -91,6 +94,10 @@ export default function NavMobile() {
           <div className="pb-4 border-b border-border/20">
             <ThemeToggle />
           </div>
+          {/* Temporal trigger in mobile menu */}
+          <div className="pb-4 border-b border-border/20">
+            <TemporalTrigger />
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <span className="meta meta-accent signal-pulse text-[8px]">●</span>
@@ -110,15 +117,15 @@ export default function NavMobile() {
     <>
       <button
         className="md:hidden meta text-[11px] text-text/80 hover:text-accent transition-colors border border-border/40 px-3 py-1.5"
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={isOpen ? closeMenu : openMenu}
       >
-        {open ? "DISMISS" : "INDEX_ACCESS"}
+        {isOpen ? "DISMISS" : "INDEX_ACCESS"}
       </button>
 
-      {mounted && open && createPortal(overlay, document.body)}
+      {isClient && isOpen && createPortal(overlay, document.body)}
     </>
   );
 }

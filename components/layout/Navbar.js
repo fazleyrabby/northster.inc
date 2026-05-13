@@ -7,13 +7,27 @@ import NavMobile from "./NavMobile";
 import { NAV, SITE } from "@/lib/constants";
 import ThemeToggle from "@/components/atmosphere/ThemeToggle";
 import { useAudio } from "@/components/atmosphere/AudioManager";
+import { useTemporal } from "@/components/atmosphere/TemporalEngine";
+import TemporalTrigger from "@/components/ui/TemporalTrigger";
 
 export default function Navbar() {
   const pathname = usePathname();
   const { isAudioEnabled, toggleAudio, volume, setVolume } = useAudio();
+  const { era, isTransitioning } = useTemporal();
 
-  // Dynamic context for the Archive Rail
+  const isFuture = era === "future";
+
+  // Dynamic context — era-aware
   const getContext = () => {
+    if (isTransitioning) return isFuture ? "TEMPORAL_RETURN / ARCHIVE_SEQUENCE_INIT" : "TEMPORAL_SHIFT / CHRONOLOGICAL_DISPLACEMENT_ACTIVE";
+    if (isFuture) {
+      if (pathname.startsWith("/archive/documents")) return "MERIDIAN: DOC_CONTINUUM / POST_DIGITAL_RECORD";
+      if (pathname.startsWith("/archive")) return "MERIDIAN: INSTITUTIONAL_RECORD / CONTINUITY_DIV";
+      if (pathname.startsWith("/products")) return "MERIDIAN: SYSTEMS_MANIFEST / CURRENT_PRODUCTION";
+      if (pathname.startsWith("/labs")) return "MERIDIAN: RESEARCH_CONTINUUM / DEEP_SYSTEMS";
+      if (pathname.startsWith("/network")) return "MERIDIAN: RELAY_MESH / DISTRIBUTED_PRESENCE";
+      return "NORTHSTER_CONTINUUM / TEMPORAL_LAYER: 2225";
+    }
     if (pathname.startsWith("/archive/documents")) return "SEGMENT: DOC_ARCHIVE / INTERNAL_RECORDS";
     if (pathname.startsWith("/archive")) return "SEGMENT: INSTITUTIONAL_ARCHIVE / DIV_04";
     if (pathname.startsWith("/labs")) return "FACILITY: NORTHSTER_LABS / RESEARCH_NODE";
@@ -31,7 +45,9 @@ export default function Navbar() {
           <div className="py-1 md:py-0.5 flex justify-between items-center gap-2 opacity-70 md:hover:opacity-100 transition-opacity duration-500 min-w-0 overflow-hidden">
             <div className="flex gap-x-4 items-center min-w-0 overflow-hidden">
               <div className="flex items-center gap-3 shrink-0">
-                <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">SYS: STABLE</span>
+                <span className="doc-ref text-[8px] md:text-[9px] tracking-[0.2em]">
+                  {isFuture ? "SYS: MERIDIAN" : "SYS: STABLE"}
+                </span>
 
                 <div className="flex items-center gap-2">
                   <button
@@ -62,12 +78,17 @@ export default function Navbar() {
               </div>
             </div>
             <div className="flex items-center gap-3 shrink-0">
+              <TemporalTrigger />
               <div className="flex items-center gap-1.5">
                 <span className="meta meta-accent signal-pulse text-[8px]">●</span>
-                <span className="doc-ref text-[8px] md:text-[9px] hidden sm:block">SIGNAL_STABLE / CH.04</span>
-                <span className="doc-ref text-[8px] sm:hidden">CH.04</span>
+                <span className="doc-ref text-[8px] md:text-[9px] hidden sm:block">
+                  {isFuture ? "CONTINUUM_STABLE / CH.∞" : "SIGNAL_STABLE / CH.04"}
+                </span>
+                <span className="doc-ref text-[8px] sm:hidden">{isFuture ? "CH.∞" : "CH.04"}</span>
               </div>
-              <span className="doc-ref text-[9px] hidden md:block">EST. 1978 / DIV. 04</span>
+              <span className="doc-ref text-[9px] hidden md:block">
+                {isFuture ? "EST. 1978 / ERA: 2225" : "EST. 1978 / DIV. 04"}
+              </span>
             </div>
           </div>
         </Container>
@@ -90,6 +111,7 @@ export default function Navbar() {
             <nav className="hidden md:flex items-center h-full border-l border-r border-border/50 divide-x divide-border/50">
               {NAV.slice(1).map((item) => {
                 const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
+                const navLabel = isFuture ? (item.futureLabel || item.label) : item.label;
                 return (
                   <Link
                     key={item.href}
@@ -100,7 +122,7 @@ export default function Navbar() {
                       ${active ? "text-text font-bold bg-panel/20" : "text-text/50 hover:text-text hover:bg-panel/40"}
                     `}
                   >
-                    <span className="relative z-10">{item.label}</span>
+                    <span className="relative z-10">{navLabel}</span>
                     {active && (
                       <div className="absolute inset-x-0 bottom-0 h-[2px] bg-accent/80 phosphor shadow-[0_0_8px_rgba(199,169,107,0.4)]" />
                     )}
@@ -124,8 +146,12 @@ export default function Navbar() {
               <span className="doc-ref text-[9px] md:text-[10px] uppercase tracking-wider truncate">{getContext()}</span>
             </div>
             <div className="flex items-center gap-4 md:gap-6 shrink-0">
-              <span className="doc-ref text-[9px] md:text-[10px] tabular-nums">REV: 04.22</span>
-              <span className="doc-ref text-[10px] hidden lg:block uppercase tracking-widest opacity-40">Classification: Restricted</span>
+              <span className="doc-ref text-[9px] md:text-[10px] tabular-nums">
+                {isFuture ? "CONTINUITY: 04.∞" : "REV: 04.22"}
+              </span>
+              <span className="doc-ref text-[10px] hidden lg:block uppercase tracking-widest opacity-40">
+                {isFuture ? "Temporal Layer: Restricted" : "Classification: Restricted"}
+              </span>
             </div>
           </div>
         </Container>

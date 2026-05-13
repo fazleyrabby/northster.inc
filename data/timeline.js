@@ -1,4 +1,4 @@
-export const timeline = [
+export const archiveTimeline = [
   {
     year: "1975",
     title: "The Signal Disruption",
@@ -60,3 +60,48 @@ export const timeline = [
     body: "Manufacturing records transferred to long-term storage. Active field service transitions to the autonomous ARCHIVE system.",
   },
 ];
+
+export const futureTimeline = [
+  {
+    year: "1998",
+    title: "Archive Division 04 sealed",
+    body: "Manufacturing records transferred to long-term storage. The original analog mesh enters autonomous operation — unattended, uninterrupted.",
+  },
+  {
+    year: "2041",
+    title: "Continuity Protocol activated",
+    body: "After 43 years of dormancy, internal succession systems activate. The Northster doctrine is transferred to a new stewardship body without public announcement.",
+  },
+  {
+    year: "2089",
+    title: "Deep Field Cluster initialised",
+    body: "DEEP FIELD CLUSTER node zero activates in an undisclosed location. Distributed compute begins accumulating across 236 years of continuous uptime.",
+  },
+  {
+    year: "2140",
+    title: "Relay Mesh Node passes 1M units",
+    body: "The 1,000,000th RELAY MESH NODE registers to the global distribution record. No ceremony was held. The signal simply continued.",
+  },
+  {
+    year: "2198",
+    title: "MERIDIAN/V enters continuity service",
+    body: "The fifth-generation workstation descends directly from the AX–01 lineage. NSM-7 titanium-ceramic casing. Same doctrine. Different material.",
+  },
+  {
+    year: "2210",
+    title: "STRATUM ARCHIVE commissioned",
+    body: "240-layer dimensional record surface enters production. Every layer contains a complete copy of the institutional archive, separated by 0.4 microns of void glass.",
+  },
+  {
+    year: "2220",
+    title: "VOID TERMINAL classified",
+    body: "Development begins on an interface with no visible surface. Interaction occurs through resistance fields. Classification: RESTRICTED.",
+  },
+  {
+    year: "2225",
+    title: "Continuum Record published",
+    body: "The 2225 catalogue is released into general circulation. Eight active systems. 1.2M+ relay nodes. 236 years of uninterrupted deep-field compute.",
+  },
+];
+
+export const timeline = [...archiveTimeline];

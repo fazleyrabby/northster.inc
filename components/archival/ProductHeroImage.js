@@ -8,7 +8,7 @@ import Skeleton from "@/components/ui/Skeleton";
 export default function ProductHeroImage({ slug }) {
   const [loaded, setLoaded] = useState(false);
   const product = products.find((p) => p.slug === slug);
-  const imgPath = `/images/products/${slug}/product.png`;
+  const imgPath = product?.image ?? `/images/products/${slug}/product.png`;
 
   return (
     <div className="relative w-full aspect-[3/2] bg-panel overflow-hidden archival-plate">

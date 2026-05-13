@@ -1,9 +1,10 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { vocalEngine } from "@/lib/audio/vocal-engine";
 import { useTheme } from "./ThemeProvider";
+import { useTemporal } from "./TemporalEngine";
 
 const AudioContext = createContext({
   isAudioEnabled: false,
@@ -14,29 +15,33 @@ const AudioContext = createContext({
 
 export const useAudio = () => useContext(AudioContext);
 
+function readStoredAudio() {
+  if (typeof window === "undefined") return false;
+  try { return localStorage.getItem("northster-audio-enabled") === "true"; } catch { return false; }
+}
+
+function readStoredVolume() {
+  if (typeof window === "undefined") return 0.5;
+  try {
+    const saved = localStorage.getItem("northster-audio-volume");
+    return saved !== null ? parseFloat(saved) : 0.5;
+  } catch { return 0.5; }
+}
+
 export default function AudioManager({ children }) {
-  const [isAudioEnabled, setIsAudioEnabled] = useState(false);
-  const [volume, setVolumeState] = useState(0.5);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(readStoredAudio);
+  const [volume, setVolumeState] = useState(readStoredVolume);
   const [isInitialized, setIsInitialized] = useState(false);
   const pathname = usePathname();
   const { theme } = useTheme();
+  const { era } = useTemporal();
+  const initialVolume = useRef(volume);
 
-  // Load preference from localStorage
+  // Sync stored volume to engine on mount (engine reads this.volume before init)
   useEffect(() => {
-    const savedAudio = localStorage.getItem("northster-audio-enabled");
-    const savedVolume = localStorage.getItem("northster-audio-volume");
-    
-    if (savedAudio === "true") {
-      setIsAudioEnabled(true);
-    }
-    if (savedVolume !== null) {
-      const vol = parseFloat(savedVolume);
-      setVolumeState(vol);
-      vocalEngine?.setVolume(vol);
-    }
+    vocalEngine?.setVolume(initialVolume.current);
   }, []);
 
-  // Initialize engine on first interaction if enabled
   const initEngine = useCallback(() => {
     if (!vocalEngine || isInitialized) return;
     vocalEngine.init();
@@ -46,15 +51,14 @@ export default function AudioManager({ children }) {
 
   const setVolume = useCallback((val) => {
     setVolumeState(val);
-    localStorage.setItem("northster-audio-volume", val.toString());
+    try { localStorage.setItem("northster-audio-volume", val.toString()); } catch {}
     vocalEngine?.setVolume(val);
   }, []);
 
-  // Handle Mute/Unmute
   const toggleAudio = useCallback(() => {
     const newState = !isAudioEnabled;
     setIsAudioEnabled(newState);
-    localStorage.setItem("northster-audio-enabled", newState.toString());
+    try { localStorage.setItem("northster-audio-enabled", newState.toString()); } catch {}
 
     if (newState) {
       initEngine();
@@ -64,23 +68,18 @@ export default function AudioManager({ children }) {
     }
   }, [isAudioEnabled, initEngine]);
 
-  // Listen for theme changes to adjust audio texture
+  // Sync audio mode to era + theme
   useEffect(() => {
     if (!isInitialized) return;
-    const mode = theme === "archive-night" ? "night" : "day";
-    vocalEngine?.setMode(mode);
-  }, [theme, isInitialized]);
+    if (era === "future") {
+      vocalEngine?.setMode("future");
+    } else {
+      const mode = theme === "archive-night" ? "night" : "day";
+      vocalEngine?.setMode(mode);
+    }
+  }, [era, theme, isInitialized, pathname]);
 
-  // Handle page-specific atmospheric shifts (subtle)
-  useEffect(() => {
-    if (!isInitialized) return;
-    // Potentially add logic here for /network or /archive specific tones
-    // For now, just ensure the current mode is maintained
-    const mode = theme === "archive-night" ? "night" : "day";
-    vocalEngine?.setMode(mode);
-  }, [pathname, theme, isInitialized]);
-
-  // Global click listener to catch the first interaction if enabled
+  // Catch first interaction if audio was enabled from stored preference
   useEffect(() => {
     const handleFirstInteraction = () => {
       if (isAudioEnabled && !isInitialized) {

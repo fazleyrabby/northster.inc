@@ -1,13 +1,11 @@
 import Container from "@/components/layout/Container";
 import Link from "next/link";
 import EditorialSection from "@/components/sections/EditorialSection";
-import ArchiveItem from "@/components/sections/ArchiveItem";
-import TimelineBlock from "@/components/sections/TimelineBlock";
 import MetaLabel from "@/components/ui/MetaLabel";
 import Divider from "@/components/ui/Divider";
 import CTASection from "@/components/sections/CTASection";
-import { archiveEntries } from "@/data/archive";
-import { timeline } from "@/data/timeline";
+import EraTimelineBlock from "@/components/sections/EraTimelineBlock";
+import EraArchiveEntries from "@/components/sections/EraArchiveEntries";
 
 export const metadata = { title: "Archive" };
 
@@ -18,20 +16,35 @@ export default function ArchivePage() {
         <Container size="wide" className="pt-20 pb-16">
           <div className="flex flex-wrap justify-between gap-4">
             <div className="flex gap-x-10 gap-y-2 flex-wrap">
-              <MetaLabel>★ ARCHIVE / DIVISION 04</MetaLabel>
-              <MetaLabel>{archiveEntries.length} ENTRIES INDEXED</MetaLabel>
-              <MetaLabel>PARTIAL CLEARANCE</MetaLabel>
+              {/* Archive era */}
+              <MetaLabel className="archive-only">★ ARCHIVE / DIVISION 04</MetaLabel>
+              <MetaLabel className="archive-only">PARTIAL CLEARANCE</MetaLabel>
+              {/* Future era */}
+              <MetaLabel className="future-only">★ CONTINUUM RECORD / 2225</MetaLabel>
+              <MetaLabel className="future-only">FULL CLEARANCE / OPEN RECORD</MetaLabel>
             </div>
             <MetaLabel accent>● TRANSMISSION OPEN</MetaLabel>
           </div>
           <hr className="rule mt-10" />
           <div className="pt-16 md:pt-24 pb-8 grid grid-cols-1 md:grid-cols-12 gap-10">
-            <h1 className="md:col-span-9 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
+            {/* Archive heading */}
+            <h1 className="archive-only md:col-span-9 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
               The recovered <span className="italic text-accent">record</span>.
             </h1>
-            <p className="md:col-span-3 md:pt-6 text-base text-muted leading-relaxed">
+            {/* Future heading */}
+            <h1 className="future-only md:col-span-9 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
+              The institutional <span className="italic text-accent">record</span>.
+            </h1>
+            {/* Archive intro */}
+            <p className="archive-only md:col-span-3 md:pt-6 text-base text-muted leading-relaxed">
               Field notes, engineering logs, and internal memoranda preserved
               by Archive Division 04. Some entries remain partially redacted.
+            </p>
+            {/* Future intro */}
+            <p className="future-only md:col-span-3 md:pt-6 text-base text-muted leading-relaxed">
+              The complete institutional record. Field notes, continuity logs,
+              and internal memoranda spanning 1978 to 2225.
+              All entries cleared for general circulation.
             </p>
           </div>
         </Container>
@@ -74,16 +87,14 @@ export default function ArchivePage() {
       <EditorialSection>
         <Divider label="01 — INSTITUTIONAL TIMELINE" />
         <div className="mt-14">
-          <TimelineBlock entries={timeline} />
+          <EraTimelineBlock />
         </div>
       </EditorialSection>
 
       <EditorialSection>
         <Divider label="02 — RECORD FRAGMENTS" />
         <div className="mt-12">
-          {archiveEntries.map((e) => (
-            <ArchiveItem key={e.id} entry={e} />
-          ))}
+          <EraArchiveEntries />
         </div>
       </EditorialSection>
 

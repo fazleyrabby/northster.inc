@@ -38,7 +38,7 @@ export default async function ProductPage({ params }) {
   const product = productBySlug(slug);
   if (!product) notFound();
 
-  const related = products.filter((p) => p.slug !== slug).slice(0, 3);
+  const related = products.filter((p) => p.slug !== slug && p.era === product.era).slice(0, 3);
   const isRestricted = product.clearance === "RESTRICTED";
 
   // Filter maintenance records for this specific system

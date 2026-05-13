@@ -3,7 +3,7 @@ import EditorialSection from "@/components/sections/EditorialSection";
 import MetaLabel from "@/components/ui/MetaLabel";
 import Divider from "@/components/ui/Divider";
 import CTASection from "@/components/sections/CTASection";
-import { networkNodes } from "@/data/archive";
+import EraNetworkContent from "@/components/sections/EraNetworkContent";
 
 export const metadata = { title: "Network" };
 
@@ -14,22 +14,38 @@ export default function NetworkPage() {
         <Container size="wide" className="pt-20 pb-16">
           <div className="flex flex-wrap justify-between gap-4">
             <div className="flex gap-x-10 gap-y-2 flex-wrap">
-              <MetaLabel>★ NORTHSTER / NETWORK</MetaLabel>
-              <MetaLabel>NS–MESH V3</MetaLabel>
-              <MetaLabel>{networkNodes.length} NODES VISIBLE</MetaLabel>
+              {/* Archive era labels */}
+              <MetaLabel className="archive-only">★ NORTHSTER / NETWORK</MetaLabel>
+              <MetaLabel className="archive-only">NS–MESH V3</MetaLabel>
+              {/* Future era labels */}
+              <MetaLabel className="future-only">★ NORTHSTER / RELAY MESH</MetaLabel>
+              <MetaLabel className="future-only">NS–RELAY V5</MetaLabel>
+              <MetaLabel className="future-only">1.2M+ NODES DISTRIBUTED</MetaLabel>
             </div>
             <MetaLabel accent>● MESH STABLE</MetaLabel>
           </div>
           <hr className="rule mt-10" />
 
           <div className="pt-16 md:pt-24 pb-8 grid grid-cols-1 md:grid-cols-12 gap-10">
-            <h1 className="md:col-span-8 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
+            {/* Archive heading */}
+            <h1 className="archive-only md:col-span-8 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
               The mesh that has not <span className="italic text-accent">slept</span>.
             </h1>
-            <p className="md:col-span-4 md:pt-6 text-base text-muted leading-relaxed max-w-md">
+            {/* Future heading */}
+            <h1 className="future-only md:col-span-8 font-display text-5xl md:text-6xl lg:text-7xl leading-[0.92]">
+              1.2 million nodes. Not one <span className="italic text-accent">switched off</span>.
+            </h1>
+            {/* Archive intro */}
+            <p className="archive-only md:col-span-4 md:pt-6 text-base text-muted leading-relaxed max-w-md">
               Northster&apos;s analog mesh network was first deployed in 1985.
               The lanterns have not been switched off. The signal has not
               been interrupted.
+            </p>
+            {/* Future intro */}
+            <p className="future-only md:col-span-4 md:pt-6 text-base text-muted leading-relaxed max-w-md">
+              The RELAY MESH NODE network succeeded the original 1985 analog mesh.
+              1,200,000+ units distributed across six atmospheric layers and four ocean basins.
+              240 years of uninterrupted uptime on record.
             </p>
           </div>
         </Container>
@@ -50,22 +66,15 @@ export default function NetworkPage() {
             {[
               [120, 90], [280, 70], [430, 150], [610, 110],
               [200, 280], [380, 320], [560, 280], [690, 380],
-            ].map(([x, y], i) => {
-              const node = networkNodes[i];
-              const degraded = node?.status === "DEGRADED";
-              return (
-                <g key={i}>
-                  <circle cx={x} cy={y} r="18" stroke="currentColor" strokeWidth="0.4" fill="none" opacity="0.5" />
-                  <circle cx={x} cy={y} r="4" fill={degraded ? "#c7a96b" : "currentColor"} />
-                  <text x={x + 22} y={y - 4} fontFamily="monospace" fontSize="9" fill="currentColor" opacity="0.85">
-                    {node?.id || `NODE/${i + 1}`}
-                  </text>
-                  <text x={x + 22} y={y + 10} fontFamily="monospace" fontSize="7" fill="currentColor" opacity="0.5">
-                    {node?.status || "STABLE"}
-                  </text>
-                </g>
-              );
-            })}
+            ].map(([x, y], i) => (
+              <g key={i}>
+                <circle cx={x} cy={y} r="18" stroke="currentColor" strokeWidth="0.4" fill="none" opacity="0.5" />
+                <circle cx={x} cy={y} r="4" fill="currentColor" />
+                <text x={x + 22} y={y - 4} fontFamily="monospace" fontSize="9" fill="currentColor" opacity="0.85">
+                  NODE/{String(i + 1).padStart(2, "0")}
+                </text>
+              </g>
+            ))}
             <g stroke="currentColor" strokeWidth="0.5" opacity="0.4" fill="none">
               <path d="M 120 90 L 280 70 L 430 150 L 610 110" />
               <path d="M 200 280 L 380 320 L 560 280 L 690 380" />
@@ -76,43 +85,21 @@ export default function NetworkPage() {
           </svg>
           <div className="absolute top-4 left-4 flex gap-4">
             <MetaLabel accent>● MESH STABLE</MetaLabel>
-            <MetaLabel>NS–MESH V3</MetaLabel>
+            {/* Archive label */}
+            <MetaLabel className="archive-only">NS–MESH V3</MetaLabel>
+            {/* Future label */}
+            <MetaLabel className="future-only">NS–RELAY V5 / PARTIAL VIEW</MetaLabel>
           </div>
           <div className="absolute bottom-4 right-4">
-            <MetaLabel>FIELD MAP / NORTHERN PROVINCES</MetaLabel>
+            <MetaLabel className="archive-only">FIELD MAP / NORTHERN PROVINCES</MetaLabel>
+            <MetaLabel className="future-only">RELAY MAP / GLOBAL DISTRIBUTION</MetaLabel>
           </div>
         </div>
       </EditorialSection>
 
       <EditorialSection>
         <Divider label="02 — NODE REGISTER" />
-        <table className="w-full mt-12 text-left border-collapse">
-          <thead>
-            <tr className="border-y border-border-soft">
-              <th className="meta py-4 pr-6 font-normal">ID</th>
-              <th className="meta py-4 pr-6 font-normal">LOCATION</th>
-              <th className="meta py-4 pr-6 font-normal">STATUS</th>
-              <th className="meta py-4 font-normal text-right">UPTIME</th>
-            </tr>
-          </thead>
-          <tbody>
-            {networkNodes.map((n) => (
-              <tr
-                key={n.id}
-                className="border-b border-border-soft hover:bg-panel/40 transition-colors duration-500"
-              >
-                <td className="py-6 pr-6 meta">{n.id}</td>
-                <td className="py-6 pr-6 text-sm text-text">{n.location}</td>
-                <td className="py-6 pr-6">
-                  <span className={`meta ${n.status === "STABLE" ? "meta-accent" : ""}`}>
-                    ● {n.status}
-                  </span>
-                </td>
-                <td className="py-6 meta text-right">{n.uptime}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <EraNetworkContent />
       </EditorialSection>
 
       <CTASection

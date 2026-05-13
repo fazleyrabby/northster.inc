@@ -536,6 +536,298 @@ function GlyphOrbital() {
   );
 }
 
+// ── MERIDIAN/V — Continuity Workstation, Epoch V ─────────────────
+function GlyphMeridianV() {
+  return (
+    <g>
+      {/* Ultra-thin chassis — 340 × 240 × 12mm, titanium-ceramic */}
+      <rect x="55" y="80" width="290" height="180" fill={DIM} stroke="currentColor" strokeWidth="1.2" rx="1" />
+      
+      {/* Gradient glass surface */}
+      <rect x="62" y="87" width="276" height="166" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.5" rx="1" />
+      <rect x="62" y="87" width="276" height="166" fill={AMBER} opacity={0.04} />
+      
+      {/* Seamless enclosure — no visible fasteners */}
+      <g opacity={0.3}>
+        <Label x={70} y={105} text="MERIDIAN/V" size={12} />
+        <Label x={70} y={118} text="CONTINUITY WORKSTATION" size={5} />
+        <Label x={70} y={130} text="CONTINUUM DIVISION / EPOCH V" size={4} />
+      </g>
+      
+      {/* Minimal presence indicator */}
+      <circle cx={310} cy={100} r={3} stroke="currentColor" strokeWidth="0.4" fill={AMBER} opacity={0.6} />
+      
+      {/* Epoch-stable interface — presents nothing until approach */}
+      <g opacity={0.2} fill="currentColor">
+        <rect x="100" y="150" width="200" height="80" stroke="currentColor" strokeWidth="0.3" fill="none" />
+        <Label x={200} y={195} text="SIGNAL/OS EPOCH V" size={5} anchor="middle" />
+        <Label x={200} y={210} text="AWAITING PROXIMITY" size={4} anchor="middle" />
+      </g>
+      
+      <Label x={57} y={280} text="NS-CONT-2225-001 / MERIDIAN SERIES / EPOCH V / CONTINUUM ERA" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── CONTINUUM/III — Editorial Continuity System, Epoch III ─────────
+function GlyphContinuum3() {
+  return (
+    <g>
+      {/* Ultra-thin gradient glass — 320 × 230 × 4mm */}
+      <rect x="60" y="70" width="280" height="170" fill={DIM} stroke="currentColor" strokeWidth="1" rx="1" />
+      
+      {/* Haptic weave surface — no mechanical mechanism */}
+      <rect x="65" y="75" width="270" height="160" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.4" rx="1" />
+      <rect x="65" y="75" width="270" height="160" fill={AMBER} opacity={0.03} />
+      
+      {/* Monochrome display — editorial focus */}
+      <g opacity={0.25} fill="currentColor">
+        <Label x={75} y={95} text="CONTINUUM/III" size={10} />
+        <Label x={75} y={107} text="EDITORIAL CONTINUITY SYSTEM" size={4} />
+        <line x1={75} y1={120} x2={325} y2={120} stroke="currentColor" strokeWidth={0.2} />
+        <Label x={75} y={135} text="NORTHSTER SERIF / EPOCH III" size={4} />
+        <Label x={75} y={155} text="One thought at a time." size={6} />
+        <Label x={75} y={165} text="For two hundred years." size={5} />
+      </g>
+      
+      {/* Ambient power indicator */}
+      <circle cx={315} cy={90} r={2.5} stroke="currentColor" strokeWidth="0.3" fill={AMBER} opacity={0.5} />
+      
+      <Label x={62} y={260} text="NS-CONT-2225-003 / CONTINUUM SERIES / EDITORIAL EPOCH III" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── RELAY MESH NODE — Distributed Presence Unit, Epoch IV ──────────
+function GlyphRelayMeshNode() {
+  return (
+    <g>
+      {/* Tiny titanium ceramic node — 40 × 40 × 8mm */}
+      <rect x="130" y="90" width="140" height="140" fill={DIM} stroke="currentColor" strokeWidth="1" rx="2" />
+      
+      {/* No indicator — status via mesh consensus */}
+      <g opacity={0.4}>
+        <Label x={200} y={120} text="RELAY MESH NODE" size={7} anchor="middle" />
+        <Label x={200} y={132} text="DISTRIBUTED PRESENCE UNIT" size={3.5} anchor="middle" />
+        <Label x={200} y={150} text="NTi-3 TITANIUM CERAMIC" size={3} anchor="middle" />
+        <Label x={200} y={160} text="40 × 40 × 8mm" size={3} anchor="middle" />
+      </g>
+      
+      {/* Mesh network representation */}
+      <g transform="translate(200, 185)" opacity={0.3}>
+        <circle cx="0" cy="0" r="20" stroke="currentColor" strokeWidth="0.3" fill="none" />
+        <circle cx="0" cy="0" r="35" stroke="currentColor" strokeWidth="0.2" fill="none" strokeDasharray="2,3" />
+        <circle cx="0" cy="0" r="50" stroke="currentColor" strokeWidth="0.2" fill="none" strokeDasharray="2,4" />
+        {[0, 60, 120, 180, 240, 300].map(angle => (
+          <circle key={angle} cx={50 * Math.cos(angle * Math.PI / 180)} cy={50 * Math.sin(angle * Math.PI / 180)} r="3" stroke="currentColor" strokeWidth="0.3" fill={DIM} />
+        ))}
+      </g>
+      
+      <Label x={130} y={260} text="NS-CONT-2225-008 / RELAY MESH / EPOCH IV / DISTRIBUTED" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── STRATUM ARCHIVE — Dimensional Record Surface, Epoch II ─────────
+function GlyphStratumArchive() {
+  return (
+    <g>
+      {/* Layered glass cabinet — 620 × 440 × 18mm */}
+      <rect x="40" y="40" width="320" height="240" fill={DIM} stroke="currentColor" strokeWidth="1.2" rx="1" />
+      
+      {/* Stratified glass display — 240 layers */}
+      <rect x="55" y="55" width="290" height="210" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.6" />
+      <rect x="55" y="55" width="290" height="210" fill={AMBER} opacity={0.02} />
+      
+      {/* 240 layer depth visualization */}
+      <g opacity={0.15}>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <rect key={i} x={60 + i * 2} y={60 + i * 15} width={280 - i * 4} height={200 - i * 12} stroke="currentColor" strokeWidth="0.2" fill="none" />
+        ))}
+      </g>
+      
+      {/* Layer count indicator */}
+      <g opacity={0.4} fill="currentColor">
+        <Label x={65} y={75} text="STRATUM ARCHIVE" size={8} />
+        <Label x={65} y={86} text="DIMENSIONAL RECORD SURFACE" size={4} />
+        <Label x={65} y={100} text="NSA-1 STRATIFIED GLASS / 24&quot;" size={3.5} />
+      </g>
+      
+      {/* Layer depth indicator */}
+      <g transform="translate(320, 150)" opacity={0.3}>
+        <rect x="0" y="0" width="15" height="100" stroke="currentColor" strokeWidth="0.3" fill={DIM} />
+        {Array.from({ length: 10 }).map((_, i) => (
+          <line key={i} x1={0} y1={i * 10} x2={15} y2={i * 10} stroke="currentColor" strokeWidth="0.2" />
+        ))}
+        <Label x={7.5} y={115} text="240" size={4} anchor="middle" />
+        <Label x={7.5} y={122} text="LAYERS" size={3} anchor="middle" />
+      </g>
+      
+      <Label x={45} y={300} text="NS-CONT-2225-011 / STRATUM SERIES / ARCHIVE EPOCH II / 247 YEARS" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── DEEP FIELD CLUSTER — Epoch Compute Substrate, Epoch III ─────────
+function GlyphDeepFieldCluster() {
+  return (
+    <g>
+      {/* No physical chassis — distributed substrate presence */}
+      <rect x="50" y="60" width="300" height="200" fill={DIM} stroke="currentColor" strokeWidth="0.8" rx="1" opacity={0.3} />
+      
+      <g opacity={0.4} fill="currentColor">
+        <Label x={200} y={90} text="DEEP FIELD CLUSTER" size={10} anchor="middle" />
+        <Label x={200} y={105} text="EPOCH COMPUTE SUBSTRATE" size={4} anchor="middle" />
+        <Label x={200} y={120} text="DISTRIBUTED EPOCH III" size={3.5} anchor="middle" />
+      </g>
+      
+      {/* Abstract distributed nodes — no physical boundary */}
+      <g transform="translate(200, 170)" opacity={0.25}>
+        {[0, 1, 2, 3, 4, 5, 6].map(i => (
+          <g key={i} transform={`rotate(${i * 51.4})`}>
+            <line x1="0" y1="0" x2="80" y2="0" stroke="currentColor" strokeWidth="0.4" />
+            <circle cx="80" cy="0" r="8" stroke="currentColor" strokeWidth="0.4" fill={DIM} />
+          </g>
+        ))}
+        <circle cx="0" cy="0" r="15" stroke="currentColor" strokeWidth="0.6" fill={DIM} />
+        <circle cx="0" cy="0" r="5" stroke="currentColor" strokeWidth="0.3" fill={AMBER} opacity={0.5} />
+      </g>
+      
+      <g opacity={0.35} fill="currentColor">
+        <Label x={200} y={235} text="SUBSTRATE / NO DISCRETE COUNT" size={3.5} anchor="middle" />
+        <Label x={200} y={245} text="236 YEARS CONTINUOUS UPTIME" size={3.5} anchor="middle" />
+      </g>
+      
+      <Label x={55} y={280} text="NS-CONT-2225-004 / DEEP FIELD / COMPUTE EPOCH III / DISTRIBUTED CONSENSUS" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── POLARIS CONTINUUM — Extreme Station Console, Epoch IV ──────────
+function GlyphPolarisContinuum() {
+  return (
+    <g>
+      {/* Sealed extreme environment chassis */}
+      <rect x="50" y="50" width="300" height="200" fill={DIM} stroke="currentColor" strokeWidth="1.2" rx="2" />
+      
+      {/* Side handles — massive, industrial */}
+      <path d="M 50 80 Q 30 120 50 160" stroke="currentColor" strokeWidth="4" fill="none" opacity={0.8} />
+      <path d="M 350 80 Q 370 120 350 160" stroke="currentColor" strokeWidth="4" fill="none" opacity={0.8} />
+      
+      {/* Epoch-sealed display */}
+      <rect x="110" y="65" width="160" height="160" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.6" />
+      <rect x="110" y="65" width="160" height="160" fill={AMBER} opacity={0.05} />
+      
+      {/* Extreme environment interface */}
+      <g opacity={0.4} fill="currentColor">
+        <Label x={120} y={85} text="POLARIS CONTINUUM" size={6} />
+        <Label x={120} y={95} text="EXTREME STATION CONSOLE" size={4} />
+        <Label x={120} y={110} text="EPOCH-SEALED / EPOCH IV" size={3.5} />
+        
+        {/* Environmental reading */}
+        <circle cx={190} cy={150} r={25} stroke="currentColor" strokeWidth="0.3" fill="none" />
+        <circle cx={190} cy={150} r={15} stroke="currentColor" strokeWidth="0.3" fill="none" />
+        <line x1="190" y1={125} x2="190" y2={175} stroke="currentColor" strokeWidth="0.3" />
+        <line x1="165" y1={150} x2="215" y2={150} stroke="currentColor" strokeWidth="0.3" />
+        
+        <Label x={120} y={190} text="ENVIRONMENT: EXTREME" size={3.5} />
+        <Label x={120} y={200} text="SPECIFICATIONS: WITHHELD" size={3} />
+      </g>
+      
+      {/* Status — restricted */}
+      <rect x="280" y="65" width="60" height="160" stroke="currentColor" strokeWidth="0.4" fill={DIM} opacity={0.2} />
+      <Label x={310} y={80} text="MERIDIAN" size={4} anchor="middle" opacity={0.5} />
+      <circle cx={310} cy={100} r={5} stroke="currentColor" strokeWidth="0.4" fill={AMBER} opacity={0.6} />
+      
+      <Label x={52} y={270} text="NS-CONT-2225-RESTRICTED / POLARIS CONTINUUM / RESTRICTED" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── TEMPORAL ARRAY — Deep Signal Receiver, Epoch III ───────────────
+function GlyphTemporalArray() {
+  return (
+    <g>
+      {/* Deep signal receiver cabinet */}
+      <rect x="45" y="45" width="310" height="240" fill={DIM} stroke="currentColor" strokeWidth="1.2" rx="1" />
+      
+      {/* Panel seams */}
+      <line x1="140" y1="45" x2="140" y2="285" stroke="currentColor" strokeWidth="0.5" />
+      <line x1="280" y1="45" x2="280" y2="285" stroke="currentColor" strokeWidth="0.5" />
+      
+      {/* Left — Badge & Status */}
+      <g opacity={0.5} fill="currentColor">
+        <Label x={52} y={70} text="NORTHSTER INC." size={4.5} />
+        <Label x={52} y={83} text="TEMPORAL ARRAY" size={9} />
+        <Label x={52} y={96} text="DEEP SIGNAL RECEIVER" size={3.5} />
+        <Label x={52} y={115} text="ORBITAL CONTINUUM" size={3} />
+        <Label x={52} y={125} text="EPOCH III" size={3} />
+      </g>
+      
+      {/* 233 year dataset visualization */}
+      <rect x="150" y="60" width="120" height="140" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.5" />
+      <rect x="150" y="60" width="120" height="140" fill={AMBER} opacity={0.02} />
+      
+      <g opacity={0.3}>
+        {Array.from({ length: 8 }).map((_, i) => (
+          <line key={i} x1={160 + i * 13} y1="60" x2={160 + i * 13} y2="200" stroke="currentColor" strokeDasharray="2,3" />
+        ))}
+        <Label x={210} y={75} text="233 YEAR DATASET" size={4} anchor="middle" />
+        <Label x={210} y={85} text="EPOCH-ARCHIVE" size={3.5} anchor="middle" />
+      </g>
+      
+      {/* Temporal waterfall display */}
+      <rect x="52" y="215" width="80" height="45" stroke="currentColor" strokeWidth="0.4" fill={SCREEN_BG} opacity={0.2} />
+      <path d="M 58 250 Q 92 230 126 250" stroke="currentColor" strokeWidth="0.3" fill="none" opacity={0.4} />
+      <line x1="92" y1="255" x2="110" y2="235" stroke="currentColor" strokeWidth="0.5" />
+      
+      {/* Right — Restricted controls */}
+      <g opacity={0.4}>
+        <Label x={322} y={70} text="SIGNAL CAPTURE" size={4} anchor="middle" />
+        <Label x={322} y={120} text="EPOCH III" size={4} anchor="middle" />
+        <Label x={322} y={140} text="RESTRICTED" size={3} anchor="middle" />
+      </g>
+      
+      <StatusLamp cx={295} cy={80} active />
+      <StatusLamp cx={310} cy={80} active />
+      <StatusLamp cx={340} cy={80} active />
+      
+      <Label x={47} y={300} text="NS-CONT-2225-RESTRICTED-02 / TEMPORAL ARRAY / RESTRICTED / 233 YEARS" opacity={0.35} />
+    </g>
+  );
+}
+
+// ── VOID TERMINAL — Absent Interface System, Epoch I ──────────────
+function GlyphVoidTerminal() {
+  return (
+    <g>
+      {/* Optically null surface — NSA-1 void glass */}
+      <rect x="60" y="60" width="280" height="180" fill={DIM} stroke="currentColor" strokeWidth="0.8" rx="2" opacity={0.15} />
+      
+      {/* No visible interface until required */}
+      <g opacity={0.15}>
+        <rect x="70" y="70" width="260" height="160" stroke="currentColor" strokeWidth="0.3" fill="none" />
+      </g>
+      
+      <g opacity={0.3} fill="currentColor">
+        <Label x={200} y={120} text="VOID TERMINAL" size={12} anchor="middle" />
+        <Label x={200} y={138} text="ABSENT INTERFACE SYSTEM" size={5} anchor="middle" />
+        <Label x={200} y={155} text="NSA-1 VOID GLASS / OPTICALLY NULL" size={4} anchor="middle" />
+        <Label x={200} y={175} text="EPOCH I / NO ARCHIVE LINEAGE" size={3.5} anchor="middle" />
+      </g>
+      
+      {/* Intent detection — proximity sensor representation */}
+      <g transform="translate(200, 200)" opacity={0.2}>
+        <circle cx="0" cy="0" r="30" stroke="currentColor" strokeWidth="0.2" fill="none" strokeDasharray="3,3" />
+        <circle cx="0" cy="0" r="50" stroke="currentColor" strokeWidth="0.15" fill="none" strokeDasharray="3,5" />
+        <circle cx="0" cy="0" r="70" stroke="currentColor" strokeWidth="0.1" fill="none" strokeDasharray="3,7" />
+      </g>
+      
+      <Label x={62} y={260} text="NS-CONT-2225-019 / VOID SERIES / EPOCH I / MERIDIAN CLEARANCE" opacity={0.35} />
+    </g>
+  );
+}
+
 // ── Registry ─────────────────────────────────────────────────────
 const GLYPHS = {
   "ax-01": GlyphAX01,
@@ -545,9 +837,30 @@ const GLYPHS = {
   "hzn-90": GlyphHZN90,
   "polaris-unit": GlyphPolarisUnit,
   "orbital": GlyphOrbital,
+  "meridian-v": GlyphMeridianV,
+  "continuum-iii": GlyphContinuum3,
+  "relay-mesh-node": GlyphRelayMeshNode,
+  "stratum-archive": GlyphStratumArchive,
+  "deep-field-cluster": GlyphDeepFieldCluster,
+  "polaris-continuum": GlyphPolarisContinuum,
+  "temporal-array": GlyphTemporalArray,
+  "void-terminal": GlyphVoidTerminal,
 };
 
-export default function ProductGlyph({ slug, className = "" }) {
+export default function ProductGlyph({ slug, image, className = "", thumbnail = false }) {
+  if (image && !thumbnail) {
+    return (
+      <div className={`${className} relative overflow-hidden`}>
+        <img
+          src={image}
+          alt={slug}
+          className="w-full h-full object-cover"
+          style={{ filter: "var(--glyph-filter, none)" }}
+        />
+      </div>
+    );
+  }
+
   const GlyphComponent = GLYPHS[slug] || GlyphAX01;
   return (
     <svg

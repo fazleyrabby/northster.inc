@@ -13,7 +13,8 @@ export default function ProductCard({ product, index }) {
       <div className="aspect-[4/3] overflow-hidden border-b border-border relative archival-plate">
         <ProductGlyph
           slug={product.slug}
-          className="w-full h-full text-text transition-transform duration-700 ease-out group-hover:scale-[1.012]"
+          thumbnail={true}
+          className="w-full h-full text-text transition-transform duration-300 ease-out group-hover:scale-[1.008]"
         />
         <div className="absolute top-0 left-0 right-0 border-b border-border bg-panel/80 px-3 py-2 flex justify-between items-center">
           <span className="doc-ref">{partCode}</span>
