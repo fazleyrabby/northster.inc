@@ -70,7 +70,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${plexMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${cormorant.variable} ${plexMono.variable} ${syne.variable} ${dmMono.variable}`} suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-background text-text" suppressHydrationWarning>
         {/* Runs before React hydration — applies stored era/theme to prevent CSS flash */}
         <script dangerouslySetInnerHTML={{ __html: `(function(){try{var e=localStorage.getItem("northster-era");if(e==="future")document.documentElement.setAttribute("data-era","future");var t=localStorage.getItem("northster-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}})()` }} />
