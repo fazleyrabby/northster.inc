@@ -600,58 +600,53 @@ function GlyphMeridianV() {
 function GlyphContinuumIII() {
   return (
     <g>
-      {/* Surface context — table/desk plane */}
-      <line x1="20" y1="268" x2="380" y2="268" stroke="currentColor" strokeWidth="0.4" opacity={0.15} />
-      {/* Cast shadow */}
-      <ellipse cx="200" cy="272" rx="155" ry="5" fill="currentColor" opacity={0.06} />
-
-      {/* Main slab — 8mm thin, landscape — slight perspective tilt */}
-      <path d="M 45 90 L 355 80 L 358 265 L 42 268 Z" fill={DIM} stroke="currentColor" strokeWidth="0.9" />
-      {/* Left edge — 8mm depth, visible */}
-      <path d="M 42 268 L 36 260 L 39 78 L 45 90 Z" fill={DIM} stroke="currentColor" strokeWidth="0.5" opacity={0.8} />
-      {/* Bottom edge */}
-      <path d="M 42 268 L 358 265 L 362 273 L 38 276 Z" fill={DIM} stroke="currentColor" strokeWidth="0.4" opacity={0.6} />
-
-      {/* NGL-2 display surface — top 65% */}
-      <path d="M 49 94 L 351 84 L 353 187 L 47 190 Z" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.35" />
-      {/* Glass inner inset */}
-      <path d="M 53 98 L 347 88 L 349 183 L 51 186 Z" fill="none" stroke="currentColor" strokeWidth="0.15" opacity={0.3} />
-
-      {/* Display content — editorial, minimal */}
-      <g opacity={0.20}>
-        <Label x={58} y={110} text="NORTHSTER INC." size={4} opacity={0.7} />
-        <Label x={58} y={119} text="CONTINUUM/III — Editorial Continuity System" size={4.5} opacity={0.9} />
-        <line x1={58} y1={124} x2={344} y2={122} stroke="currentColor" strokeWidth={0.2} opacity={0.7} />
-        <Label x={58} y={133} text="One thought at a time. For two hundred years." size={5.5} opacity={0.8} />
-        <line x1={58} y1={141} x2={200} y2={140} stroke="currentColor" strokeWidth={0.2} opacity={0.4} />
-        <Label x={58} y={150} text="NGL-2 GRADIENT GLASS / EPOCH III" size={3.5} opacity={0.5} />
-        <Label x={58} y={158} text="LINE 001  COL 001  INSERT" size={3.5} opacity={0.4} />
-        {/* Two-column layout hint */}
-        <line x1={200} y1={126} x2={200} y2={183} stroke="currentColor" strokeWidth={0.2} opacity={0.2} />
-        <Label x={210} y={133} text="The machine is not a tool." size={4.5} opacity={0.6} />
-        <Label x={210} y={141} text="It is a discipline." size={4.5} opacity={0.6} />
+      {/* Name header */}
+      <g opacity={0.7}>
+        <Label x={20} y={28} text="CONTINUUM / III" size={8} />
+        <Label x={20} y={40} text="EDITORIAL CONTINUITY SYSTEM" size={4} opacity={0.55} />
+        <line x1="20" y1="46" x2="380" y2="46" stroke="currentColor" strokeWidth="0.3" opacity={0.4} />
       </g>
 
-      {/* Haptic keyboard zone — bottom 33%, barely visible key grid */}
-      <path d="M 47 193 L 353 190 L 354 261 L 46 264 Z" fill={DIM} stroke="currentColor" strokeWidth="0.25" opacity={0.5} />
-      {[0, 1, 2, 3].map(row =>
-        Array.from({ length: 12 }).map((_, i) => (
+      {/* Device body — flat rectangle, front-on */}
+      <rect x="20" y="56" width="360" height="180" fill={DIM} stroke="currentColor" strokeWidth="0.9" />
+
+      {/* Display area — top 60% */}
+      <rect x="28" y="63" width="344" height="110" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.35" />
+      {/* Display inner inset */}
+      <rect x="32" y="67" width="336" height="102" fill="none" stroke="currentColor" strokeWidth="0.15" opacity={0.3} />
+
+      {/* Display content */}
+      <g opacity={0.30}>
+        <Label x={42} y={84} text="NORTHSTER INC.  /  CONTINUUM/III" size={4.5} />
+        <line x1={42} y1={90} x2={358} y2={90} stroke="currentColor" strokeWidth={0.2} opacity={0.5} />
+        <Label x={42} y={102} text="One thought at a time." size={6} opacity={0.8} />
+        <Label x={42} y={113} text="For two hundred years." size={6} opacity={0.5} />
+        <line x1={200} y1={93} x2={200} y2={163} stroke="currentColor" strokeWidth={0.2} opacity={0.18} />
+        <Label x={210} y={102} text="NGL-2 GRADIENT GLASS" size={3.5} opacity={0.5} />
+        <Label x={210} y={111} text="EPOCH III / EDITORIAL" size={3.5} opacity={0.4} />
+        <Label x={42} y={158} text="LINE 001  COL 001  INSERT" size={3.5} opacity={0.35} />
+      </g>
+
+      {/* Haptic keyboard zone — bottom 38% */}
+      <rect x="28" y="178" width="344" height="52" fill={DIM} stroke="currentColor" strokeWidth="0.25" opacity={0.6} />
+      {[0, 1, 2].map(row =>
+        Array.from({ length: 14 }).map((_, i) => (
           <rect
             key={`${row}-${i}`}
-            x={52 + i * 25}
-            y={197 + row * 15}
-            width={23} height={12}
+            x={33 + i * 24}
+            y={182 + row * 16}
+            width={22} height={12}
             rx="1"
-            fill="none" stroke="currentColor" strokeWidth="0.2" opacity={0.3}
+            fill="none" stroke="currentColor" strokeWidth="0.2" opacity={0.28}
           />
         ))
       )}
 
-      {/* Pen alongside — resting on surface */}
-      <line x1="30" y1="240" x2="38" y2="268" stroke="currentColor" strokeWidth="1.2" opacity={0.25} />
-      <circle cx="30" cy="238" r="2" fill="currentColor" opacity={0.2} />
-
-      <Label x={44} y={306} text="NS-CONT-2225-003 / CONTINUUM/III / EDITORIAL EPOCH III / UNCHANGED IN PURPOSE" opacity={0.3} />
+      {/* Bottom spec bar */}
+      <line x1="20" y1="246" x2="380" y2="246" stroke="currentColor" strokeWidth="0.3" opacity={0.3} />
+      <Label x={20} y={256} text="NS-CONT-2225-003" size={3.5} opacity={0.4} />
+      <Label x={200} y={256} text="NGL-2 / HAPTIC / EPOCH III" size={3.5} anchor="middle" opacity={0.35} />
+      <Label x={380} y={256} text="UNCHANGED IN PURPOSE" size={3.5} anchor="end" opacity={0.35} />
     </g>
   );
 }
@@ -722,85 +717,55 @@ function GlyphRelayMeshNode() {
 function GlyphStratumArchive() {
   return (
     <g>
-      {/* Cast shadow on surface below */}
-      <ellipse cx="210" cy="268" rx="170" ry="8" fill="currentColor" opacity={0.07} />
-      {/* Surface plane */}
-      <line x1="20" y1="260" x2="380" y2="260" stroke="currentColor" strokeWidth="0.4" opacity={0.12} />
+      {/* Name header */}
+      <g opacity={0.7}>
+        <Label x={20} y={28} text="STRATUM ARCHIVE" size={8} />
+        <Label x={20} y={40} text="DIMENSIONAL RECORD SURFACE" size={4} opacity={0.55} />
+        <line x1="20" y1="46" x2="380" y2="46" stroke="currentColor" strokeWidth="0.3" opacity={0.4} />
+      </g>
 
-      {/* Top face — 3/4 perspective, deep dark */}
-      <path d="M 60 60 L 340 50 L 355 160 L 75 168 Z"
-        fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.8" />
-      {/* Specular highlight — single thin edge line, top-left */}
-      <line x1="60" y1="60" x2="340" y2="50"
-        stroke="currentColor" strokeWidth="0.4" opacity={0.35} />
+      {/* Slab body — flat, front-on, dark */}
+      <rect x="20" y="56" width="360" height="190" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.9" />
+      {/* Outer inset seam */}
+      <rect x="25" y="61" width="350" height="180" fill="none" stroke="currentColor" strokeWidth="0.2" opacity={0.25} />
 
-      {/* Front face — full depth */}
-      <path d="M 75 168 L 355 160 L 360 252 L 80 258 Z"
-        fill={DIM} stroke="currentColor" strokeWidth="0.7" />
-
-      {/* Left face — narrow, showing depth */}
-      <path d="M 60 60 L 75 168 L 80 258 L 65 148 Z"
-        fill={DIM} stroke="currentColor" strokeWidth="0.6" opacity={0.8} />
-
-      {/* 240 strata lines on left edge — the defining visual element */}
-      {Array.from({ length: 48 }).map((_, i) => {
-        const t = i / 47;
-        const y1 = 63 + t * 102;   // top-face left edge
-        const y2 = 63 + t * 102 + 2;
-        return (
-          <line key={i}
-            x1={60} y1={y1}
-            x2={76} y2={y1 + (168 - 63) * 0.02}
-            stroke="currentColor" strokeWidth="0.3"
-            opacity={i % 6 === 0 ? 0.35 : 0.15}
-          />
-        );
-      })}
-      {/* 240 strata lines on front bottom edge */}
+      {/* 240 strata lines — dense horizontal bands across entire face */}
       {Array.from({ length: 60 }).map((_, i) => {
-        const x = 80 + i * (280 / 59);
+        const y = 64 + i * 2.9;
+        const isMajor = i % 6 === 0;
         return (
           <line key={i}
-            x1={x} y1={258}
-            x2={x + 2.3} y2={252}
-            stroke="currentColor" strokeWidth="0.3"
-            opacity={i % 5 === 0 ? 0.4 : 0.18}
+            x1={25} y1={y}
+            x2={375} y2={y}
+            stroke="currentColor" strokeWidth={isMajor ? 0.4 : 0.2}
+            opacity={isMajor ? 0.22 : 0.09}
           />
         );
       })}
 
-      {/* Internal layer refraction — visible when light catches at angle */}
-      {/* Diagonal bands of very faint internal structure, top-left to center */}
-      {Array.from({ length: 8 }).map((_, i) => {
-        const x1 = 65 + i * 18;
-        const y1 = 62 + i * 3;
-        return (
-          <line key={i}
-            x1={x1} y1={y1}
-            x2={x1 + 80} y2={y1 + 6}
-            stroke="currentColor" strokeWidth="0.4"
-            opacity={0.06 + (7 - i) * 0.015}
-          />
-        );
-      })}
+      {/* Internal refraction — faint diagonal catch across left third */}
+      {Array.from({ length: 6 }).map((_, i) => (
+        <line key={i}
+          x1={25} y1={70 + i * 28}
+          x2={150} y2={75 + i * 28}
+          stroke="currentColor" strokeWidth="0.5"
+          opacity={0.07 - i * 0.008}
+        />
+      ))}
 
-      {/* Top surface — near-featureless, one faint label */}
-      <g opacity={0.12}>
-        <Label x={140} y={100} text="STRATUM ARCHIVE" size={10} opacity={0.8} />
-        <Label x={140} y={112} text="240 LAYERS / NSG-2 VOID GLASS" size={4} opacity={0.6} />
+      {/* Central label — engraved into surface */}
+      <g opacity={0.35}>
+        <Label x={200} y={148} text="STRATUM ARCHIVE" size={9} anchor="middle" />
+        <line x1={60} y1={154} x2={340} y2={154} stroke="currentColor" strokeWidth={0.2} opacity={0.5} />
+        <Label x={200} y={166} text="240 LAYERS / 0.4μm VOID GLASS BETWEEN EACH" size={3.5} anchor="middle" opacity={0.7} />
+        <Label x={200} y={176} text="COMPLETE INSTITUTIONAL ARCHIVE PER LAYER" size={3.5} anchor="middle" opacity={0.55} />
       </g>
 
-      {/* Front face minimal engraving */}
-      <g opacity={0.22}>
-        <Label x={90} y={188} text="STRATUM ARCHIVE" size={7} />
-        <Label x={90} y={199} text="DIMENSIONAL RECORD SURFACE" size={3.5} />
-        <line x1={90} y1={205} x2={340} y2={204} stroke="currentColor" strokeWidth={0.2} opacity={0.5} />
-        <Label x={90} y={214} text="240 LAYERS / 0.4μm VOID GLASS BETWEEN EACH" size={3.5} />
-        <Label x={90} y={224} text="COMPLETE INSTITUTIONAL ARCHIVE / EACH LAYER" size={3.5} opacity={0.7} />
-        <Label x={90} y={234} text="NS-CONT-2225-011 / RECORD SYSTEMS EPOCH II" size={3} opacity={0.5} />
-      </g>
-
-      <Label x={62} y={306} text="NS-CONT-2225-011 / STRATUM / RECORD EPOCH II / 240 LAYERS / 1.8KG" opacity={0.3} />
+      {/* Bottom spec bar */}
+      <line x1="20" y1="256" x2="380" y2="256" stroke="currentColor" strokeWidth="0.3" opacity={0.3} />
+      <Label x={20} y={266} text="NS-CONT-2225-011" size={3.5} opacity={0.4} />
+      <Label x={200} y={266} text="NSG-2 VOID GLASS / 1.8KG" size={3.5} anchor="middle" opacity={0.35} />
+      <Label x={380} y={266} text="RECORD EPOCH II" size={3.5} anchor="end" opacity={0.35} />
     </g>
   );
 }
@@ -1042,46 +1007,37 @@ function GlyphTemporalArray() {
 function GlyphVoidTerminal() {
   return (
     <g>
-      {/* Surface plane — floor/table context */}
-      <line x1="20" y1="255" x2="380" y2="255" stroke="currentColor" strokeWidth="0.4" opacity={0.10} />
-      {/* Cast shadow — very dark, barely present */}
-      <ellipse cx="205" cy="260" rx="162" ry="6" fill="currentColor" opacity={0.05} />
-
-      {/* Main slab — NSA-1 void glass, 6mm thin */}
-      {/* Slight 3/4 perspective, lying flat */}
-      <path d="M 48 78 L 362 70 L 364 248 L 50 252 Z"
-        fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.7" opacity={0.9} />
-      {/* Left 6mm depth edge */}
-      <path d="M 48 78 L 50 252 L 44 254 L 42 80 Z"
-        fill={DIM} stroke="currentColor" strokeWidth="0.5" opacity={0.55} />
-      {/* Bottom edge */}
-      <path d="M 50 252 L 364 248 L 366 256 L 52 260 Z"
-        fill={DIM} stroke="currentColor" strokeWidth="0.4" opacity={0.45} />
-
-      {/* Void glass surface — near-zero reflection */}
-      {/* One edge-catch highlight: top edge only, single thin line */}
-      <line x1="48" y1="78" x2="362" y2="70"
-        stroke="currentColor" strokeWidth="0.5" opacity={0.20} />
-
-      {/* Single point of light — ambient photonic pickup */}
-      {/* Bottom-left corner, barely visible */}
-      <circle cx="58" cy="242" r="3" fill="currentColor" opacity={0.06} />
-      <circle cx="58" cy="242" r="6" fill="currentColor" opacity={0.03} />
-
-      {/* The only content: centered text, extremely faint */}
-      <g opacity={0.18}>
-        <Label x={206} y={155} text="AWAITING CONTEXT" size={7} anchor="middle" opacity={0.9} />
-        <line x1={108} y1={161} x2={304} y2={160} stroke="currentColor" strokeWidth={0.25} opacity={0.5} />
-        <Label x={206} y={172} text="NSA-1 VOID GLASS / OPTICALLY NULL" size={4} anchor="middle" opacity={0.6} />
+      {/* Name header */}
+      <g opacity={0.7}>
+        <Label x={20} y={28} text="VOID TERMINAL" size={8} />
+        <Label x={20} y={40} text="ABSENT INTERFACE SYSTEM" size={4} opacity={0.55} />
+        <line x1="20" y1="46" x2="380" y2="46" stroke="currentColor" strokeWidth="0.3" opacity={0.4} />
       </g>
 
-      {/* Absolute darkness — suggest light absorption at edges */}
-      <path d="M 48 78 L 50 252 Q 49 165 48 78 Z"
-        fill="currentColor" opacity={0.04} />
-      <path d="M 362 70 L 364 248 Q 363 159 362 70 Z"
-        fill="currentColor" opacity={0.03} />
+      {/* Slab body — flat, front-on, near-black void glass */}
+      <rect x="20" y="56" width="360" height="190" fill={SCREEN_BG} stroke="currentColor" strokeWidth="0.7" opacity={0.85} />
+      {/* Single top-edge highlight — only sign of surface */}
+      <line x1="20" y1="56" x2="380" y2="56" stroke="currentColor" strokeWidth="0.6" opacity={0.28} />
+      {/* Outer inset — barely visible */}
+      <rect x="25" y="61" width="350" height="180" fill="none" stroke="currentColor" strokeWidth="0.15" opacity={0.15} />
 
-      <Label x={50} y={296} text="NS-CONT-2225-019 / VOID TERMINAL / EPOCH I / 18 UNITS / MERIDIAN CLEARANCE" opacity={0.28} />
+      {/* Single ambient corner glow — bottom left */}
+      <circle cx="35" cy="236" r="8" fill="currentColor" opacity={0.04} />
+      <circle cx="35" cy="236" r="4" fill="currentColor" opacity={0.05} />
+
+      {/* The only text — centered, near-invisible */}
+      <g opacity={0.22}>
+        <Label x={200} y={148} text="AWAITING CONTEXT" size={8} anchor="middle" />
+        <line x1={80} y1={155} x2={320} y2={155} stroke="currentColor" strokeWidth={0.2} opacity={0.4} />
+        <Label x={200} y={167} text="NSA-1 VOID GLASS  /  OPTICALLY NULL" size={4} anchor="middle" opacity={0.55} />
+        <Label x={200} y={178} text="INTERACTION THROUGH RESISTANCE FIELDS ONLY" size={3.5} anchor="middle" opacity={0.4} />
+      </g>
+
+      {/* Bottom spec bar */}
+      <line x1="20" y1="256" x2="380" y2="256" stroke="currentColor" strokeWidth="0.3" opacity={0.3} />
+      <Label x={20} y={266} text="NS-CONT-2225-019" size={3.5} opacity={0.4} />
+      <Label x={200} y={266} text="18 UNITS / MERIDIAN CLEARANCE" size={3.5} anchor="middle" opacity={0.35} />
+      <Label x={380} y={266} text="EPOCH I / RESTRICTED" size={3.5} anchor="end" opacity={0.35} />
     </g>
   );
 }

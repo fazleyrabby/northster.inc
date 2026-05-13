@@ -9,6 +9,7 @@ import AudioManager from "@/components/atmosphere/AudioManager";
 import TemporalEngine from "@/components/atmosphere/TemporalEngine";
 import TemporalTransition from "@/components/atmosphere/TemporalTransition";
 import SmoothScroll from "@/components/motion/SmoothScroll";
+import NavHints from "@/components/ui/NavHints";
 // Client wrapper handles the ssr:false dynamic import (required in App Router)
 import AtmosphereCanvasLoader from "@/components/webgl/AtmosphereCanvasLoader";
 
@@ -91,6 +92,7 @@ export default function RootLayout({ children }) {
               {/* Document layer — z-index: 1, above atmosphere */}
               <div className="relative z-10 min-h-screen flex flex-col">
                 <TemporalTransition />
+                <NavHints />
                 <GrainOverlay />
                 <Navbar />
                 <SmoothScroll>

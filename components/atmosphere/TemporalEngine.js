@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { eraBus } from "@/lib/era-bus";
+import { playTemporalTransition } from "@/lib/audio/temporal-sfx";
 
 const TemporalContext = createContext(null);
 
@@ -44,8 +45,10 @@ export default function TemporalEngine({ children }) {
     if (isTransitioning) return;
 
     const next = era === "archive" ? "future" : "archive";
-    setTransitionDirection(next === "future" ? "to-future" : "to-archive");
+    const dir = next === "future" ? "to-future" : "to-archive";
+    setTransitionDirection(dir);
     setIsTransitioning(true);
+    playTemporalTransition(dir);
 
     // Switch era at apex — covered by flash at ~1.5s
     const t1 = setTimeout(() => {
